@@ -1,12 +1,10 @@
-// ignore_for_file: library_private_types_in_public_api
-
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
 
 class NotificationButton extends StatefulWidget {
-  const NotificationButton({super.key});
+  const NotificationButton({Key? key}) : super(key: key);
 
   @override
   _NotificationButtonState createState() => _NotificationButtonState();
@@ -56,14 +54,16 @@ class _NotificationButtonState extends State<NotificationButton> {
   @override
   Widget build(BuildContext context) {
     productProvider = Provider.of<ProductProvider>(context);
-    return Badge(
-      position: BadgePosition(left: 25, top: 8),
+    return badges.Badge(
+      position: badges.BadgePosition.topEnd(top: 8, end: 25),
       badgeContent: Text(
         productProvider!.getNotificationIndex.toString(),
         style:
             const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      badgeColor: Colors.red,
+      badgeStyle: const badges.BadgeStyle(
+        badgeColor: Colors.red,
+      ),
       child: IconButton(
         icon: const Icon(
           Icons.notifications_none,
