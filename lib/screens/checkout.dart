@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/model/cartmodel.dart';
-import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/widgets/checkout_singleproduct.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 import 'package:shopin_app/widgets/notification_button.dart';

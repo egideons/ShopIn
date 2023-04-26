@@ -6,7 +6,7 @@ import 'package:shopin_app/model/product.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
 import 'package:shopin_app/screens/detailscreen.dart';
-import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/screens/search_category.dart';
 import 'package:shopin_app/screens/search_product.dart';
 import 'package:shopin_app/widgets/notification_button.dart';

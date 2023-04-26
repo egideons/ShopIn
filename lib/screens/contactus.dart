@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/model/usermodel.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 
 class ContactUs extends StatefulWidget {
@@ -46,7 +46,7 @@ class _ContactUsState extends State<ContactUs> {
     }
   }
 
-  Widget _buildSingleFlied({String name = ""}) {
+  Widget _buildSingleFields({String name = ""}) {
     return Container(
       height: 60,
       width: double.infinity,
@@ -87,7 +87,7 @@ class _ContactUsState extends State<ContactUs> {
   Future<bool> _onWillPop() async {
     return (await Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (ctx) => HomePage(),
+        builder: (ctx) => const HomePage(),
       ),
     ));
   }
@@ -111,7 +111,7 @@ class _ContactUsState extends State<ContactUs> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => HomePage(),
+                  builder: (ctx) => const HomePage(),
                 ),
               );
             },
@@ -131,8 +131,8 @@ class _ContactUsState extends State<ContactUs> {
                   fontSize: 28,
                 ),
               ),
-              _buildSingleFlied(name: name),
-              _buildSingleFlied(name: email),
+              _buildSingleFields(name: name),
+              _buildSingleFields(name: email),
               SizedBox(
                 height: 200,
                 child: TextFormField(

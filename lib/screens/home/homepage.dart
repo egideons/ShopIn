@@ -10,14 +10,14 @@ import 'package:shopin_app/screens/listproduct.dart';
 import 'package:shopin_app/screens/profilescreen.dart';
 import 'package:shopin_app/widgets/singleproduct.dart';
 
-import '../provider/product_provider.dart';
-import '../provider/category_provider.dart';
+import '../../provider/product_provider.dart';
+import '../../provider/category_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
-import '../model/product.dart';
-import '../widgets/notification_button.dart';
+import '../../model/product.dart';
+import '../../widgets/notification_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,7 +30,7 @@ Product? menData;
 CategoryProvider? categoryProvider;
 ProductProvider? productProvider;
 
-Product? womenData;
+Product? womanData;
 
 Product? bulbData;
 
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
             "images/man.jpg",
           ),
           AssetImage(
-            "images/women.jpg",
+            "images/woman.jpg",
           ),
           AssetImage(
             "images/camera.jpg",

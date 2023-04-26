@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, deprecated_member_use
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shopin_app/model/usermodel.dart';
-import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 
 import '../widgets/mytextformField.dart';
@@ -36,19 +36,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void vaildation() async {
     if (userName.text.isEmpty && phoneNumber.text.isEmpty) {
       const SnackBar(
-        content: Text("All Flied Are Empty"),
+        content: Text("All Fields Are Empty"),
       );
     } else if (userName.text.isEmpty) {
       const SnackBar(
-        content: Text("Name Is Empty "),
+        content: Text("Username Is Empty "),
       );
     } else if (userName.text.length < 6) {
       const SnackBar(
-        content: Text("Name Must Be 6 "),
+        content: Text("Username Must Be more than 6 character"),
       );
-    } else if (phoneNumber.text.length < 11 || phoneNumber.text.length > 11) {
+    } else if (phoneNumber.text.length < 10 || phoneNumber.text.length > 11) {
       const SnackBar(
-        content: Text("Phone Number Must Be 11 "),
+        content: Text("Phone Number Must Be 11"),
       );
     } else {
       userDetailUpdate();
@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File? _pickedImage;
 
   PickedFile? _image;
-  Future<void> getImage({ImageSource source}) async {
+  Future<void> getImage({required ImageSource source}) async {
     _image = await ImagePicker().getImage(source: source);
     setState(() {
       _pickedImage = File(_image!.path);
@@ -68,10 +68,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userUid = "";
 
   Future<String> _uploadImage({File? image}) async {
-    StorageReference storageReference =
+    String url;
+    Reference storageReference =
         FirebaseStorage.instance.ref().child("UserImage/$userUid");
-    StorageUploadTask uploadTask = storageReference.putFile(image);
-    StorageTaskSnapshot snapshot = await uploadTask.onComplete;
+    UploadTask uploadTask = storageReference.putFile(image!);
+    TaskSnapshot snapshot = await uploadTask.whenComplete(() {
+      url = storageReference.getDownloadURL() as String;
+    }).catchError((onError) {
+      print(
+        onError,
+      );
+    });
     String imageUrl = await snapshot.ref.getDownloadURL();
     return imageUrl;
   }
@@ -213,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Widget _buildTextFormFliedPart() {
+  Widget _buildTextFormFieldsPart() {
     return SizedBox(
       height: double.infinity,
       width: double.infinity,
@@ -221,7 +228,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           MyTextFormField(
-            name: "UserName",
+            textInputAction: TextInputAction.next,
+            labelText: "Enter your username",
+            hintText: "Username",
+            textInputType: TextInputType.name,
             controller: userName,
           ),
           _buildSingleContainer(
@@ -242,11 +252,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           MyTextFormField(
-            name: "Phone Number",
+            textInputAction: TextInputAction.next,
+            labelText: "Enter your phone number",
+            hintText: "Phone Number",
+            textInputType: TextInputType.phone,
             controller: phoneNumber,
           ),
           MyTextFormField(
-            name: "Address",
+            textInputAction: TextInputAction.done,
+            labelText: "Enter your address",
+            hintText: "Address",
+            textInputType: TextInputType.streetAddress,
             controller: address,
           ),
         ],
@@ -285,7 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   setState(() {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (ctx) => HomePage(),
+                        builder: (ctx) => const HomePage(),
                       ),
                     );
                   });
@@ -294,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.white,
         actions: [
           edit == false
-              ? NotificationButton()
+              ? const NotificationButton()
               : IconButton(
                   icon: const Icon(
                     Icons.check,
@@ -347,16 +363,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: double.infinity,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       CircleAvatar(
-                                          maxRadius: 65,
-                                          backgroundImage: _pickedImage == null
-                                              ? userModel.userImage == null
-                                                  ? const AssetImage(
-                                                      "images/userImage.png")
-                                                  : NetworkImage(
-                                                      userModel.userImage)
-                                              : FileImage(_pickedImage)),
+                                        maxRadius: 65,
+                                        backgroundImage: AssetImage(
+                                          "images/userImage.png",
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -403,7 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Expanded(
                                     child: Container(
                                       child: edit == true
-                                          ? _buildTextFormFliedPart()
+                                          ? _buildTextFormFieldsPart()
                                           : _buildContainerPart(),
                                     ),
                                   ),

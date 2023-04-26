@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/screens/checkout.dart';
-import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 import 'package:shopin_app/widgets/notification_button.dart';
 

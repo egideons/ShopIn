@@ -4,16 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/screens/homepage.dart';
-import 'package:shopin_app/screens/login.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/screens/welcome/welcomescreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -37,9 +39,9 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomePage();
+              return const HomePage();
             } else {
-              return Login();
+              return const WelcomeScreen();
             }
           },
         ),

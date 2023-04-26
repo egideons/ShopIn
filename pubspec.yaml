@@ -26,20 +26,35 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   image_picker: ^0.8.7+4
   badges: ^3.1.1
+  flutter_lints: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+flutter_launcher_icons: ^0.13.1
 
-  flutter_lints: ^2.0.0
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "dev_assets/logo.png"
+  adaptive_icon_background: "#f8f8f8"
+  adaptive_icon_foreground: "dev_assets/logo_adaptive.png"
 
 flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - images/about.png
+    - images/camera.jpg
+    - images/man.jpg
+    - images/woman.jpg
+    - images/userImage.png
+    - images/shopping.png
+    - dev_assets/logo.png
+    - dev_assets/logo_adaptive.png
+
+    # - images/a_dot_ham.jpeg
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
