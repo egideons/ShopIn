@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+//Transparent Color
+Color kTransparentColor = const Color(
+  0x00000000,
+);
+
 //App Main Colors
 Color kPrimaryColor = const Color(
   0xFF1976D2,

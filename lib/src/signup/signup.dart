@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_unnecessary_containers, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopin_app/src/signup/modules/gobacktologinfield.dart';
 import 'package:shopin_app/src/styles/colors.dart';
 import 'package:shopin_app/src/styles/constants.dart';
+import 'package:shopin_app/src/utils/showSnackBar.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -29,17 +31,62 @@ RegExp phoneRegExp = RegExp(
   mobilePattern,
 );
 
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+String email = "";
+String password = "";
+String errorMessage = "";
+
 class _SignUpState extends State<SignUp> {
-  void validation() {
+  void validation() async {
     final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      print(
-        "Validation successful",
-      );
-    } else {
-      print(
-        "Validation unsuccessful",
-      );
+
+    if (!form!.validate()) {
+      try {
+        await _auth
+            .createUserWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            )
+            .then((uid) => {
+                  showSnackBar(
+                    context,
+                    "Registration Successful",
+                    kSuccessColor,
+                  ),
+                  setState(() {
+                    const CircularProgressIndicator(
+                      color: kSecondaryColor,
+                    );
+                  }),
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Wrong email address was entered, try again.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Wrong password was entered, try again.";
+            break;
+          default:
+            errorMessage = "Something went wrong, try again later.";
+        }
+
+        showSnackBar(
+          context,
+          errorMessage,
+          kErrorColor,
+        ); // D
+        return showSnackBar(
+          context,
+          error.code,
+          kErrorColor,
+        );
+      }
     }
   }
 
@@ -75,7 +122,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     kHalfSizedBox,
                     Container(
-                      height: 400,
+                      height: 450,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 10,
                       ),
@@ -106,6 +153,13 @@ class _SignUpState extends State<SignUp> {
                           ),
                           kHalfSizedBox,
                           TextFormField(
+                            controller: emailController,
+                            onChanged: (value) {
+                              email = value;
+                            },
+                            onSaved: (newValue) {
+                              emailController.text = newValue!;
+                            },
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
@@ -136,8 +190,8 @@ class _SignUpState extends State<SignUp> {
                                 value,
                               )) {
                                 return "Phone number is invalid";
-                              } else if (value.length < 10 ||
-                                  value.length < 11) {
+                              } else if (value.length < 10 &&
+                                  value.length > 11) {
                                 return "Phone number is too short";
                               }
                               return null;
@@ -153,6 +207,13 @@ class _SignUpState extends State<SignUp> {
                           ),
                           kHalfSizedBox,
                           TextFormField(
+                            controller: passwordController,
+                            onChanged: (value) {
+                              password = value;
+                            },
+                            onSaved: (newValue) {
+                              passwordController.text = newValue!;
+                            },
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
                             obscureText: obscureText,

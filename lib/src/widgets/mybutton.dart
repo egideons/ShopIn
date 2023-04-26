@@ -1,30 +1,24 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
-import 'package:shopin_app/src/styles/colors.dart';
 
 class MyButton extends StatelessWidget {
-  Function onPressed;
+  final Function onPressed;
   final String name;
-  MyButton({
-    Key? key,
-    required this.onPressed,
-    required this.name,
-  }) : super(key: key);
-
+  const MyButton({super.key, required this.name, required this.onPressed});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressed(),
         style: ElevatedButton.styleFrom(
-          foregroundColor: kTextWhiteColor,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: const Color(0xff746bc9),
         ),
+        onPressed: () {
+          onPressed;
+        },
         child: Text(
           name,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );

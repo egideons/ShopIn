@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopin_app/src/login/modules/forgotpasswordfield.dart';
 import 'package:shopin_app/src/login/modules/gotosignupfield.dart';
 import 'package:shopin_app/src/styles/colors.dart';
 import 'package:shopin_app/src/styles/constants.dart';
+import 'package:shopin_app/src/utils/showSnackBar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -24,17 +26,74 @@ RegExp emailRegExp = RegExp(
   emailPattern,
 );
 
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+String email = "";
+String password = "";
+String errorMessage = "";
+
 class _LoginState extends State<Login> {
-  void validation() {
+  void validation() async {
     final FormState? form = _formKey.currentState;
     if (form!.validate()) {
-      print(
-        "Validation successful",
-      );
-    } else {
-      print(
-        "Validation unsuccessful",
-      );
+      try {
+        await _auth
+            .signInWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            )
+            .then((uid) => {
+                  showSnackBar(
+                    context,
+                    "Login Successful",
+                    kSuccessColor,
+                  ),
+                  setState(() {
+                    const CircularProgressIndicator(
+                      color: kSecondaryColor,
+                    );
+                  }),
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "invalid-email":
+            errorMessage = "Wrong email address was entered, try again.";
+
+            break;
+          case "wrong-password":
+            errorMessage = "Wrong password was entered, try again.";
+            break;
+          case "user-not-found":
+            errorMessage =
+                "The account with this email and password does not exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "The user with this email has been banned.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "Something went wrong, try again later.";
+        }
+
+        showSnackBar(
+          context,
+          errorMessage,
+          kErrorColor,
+        ); // D
+        return showSnackBar(
+          context,
+          error.code,
+          kErrorColor,
+        );
+      }
     }
   }
 
@@ -54,7 +113,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 300,
+                  height: 350,
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -66,7 +125,15 @@ class _LoginState extends State<Login> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      kHalfSizedBox,
                       TextFormField(
+                        controller: emailController,
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        onSaved: (newValue) {
+                          emailController.text = newValue!;
+                        },
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: (value) {
@@ -86,7 +153,15 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      kHalfSizedBox,
                       TextFormField(
+                        controller: passwordController,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        onSaved: (newValue) {
+                          passwordController.text = newValue!;
+                        },
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.go,
                         validator: (value) {
@@ -121,7 +196,9 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      kHalfSizedBox,
                       const ForgotPasswordField(),
+                      kHalfSizedBox,
                       SizedBox(
                         height: 45,
                         width: double.infinity,
