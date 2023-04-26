@@ -1,16 +1,14 @@
-// ignore_for_file: avoid_unnecessary_containers
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/src/app/home/homepage.dart';
-import 'package:shopin_app/src/widgets/checkout_singleproduct.dart';
-import 'package:shopin_app/src/widgets/mybutton.dart';
-import 'package:shopin_app/src/widgets/notification_button.dart';
+import 'package:shopin_app/model/cartmodel.dart';
+import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/widgets/checkout_singleproduct.dart';
+import 'package:shopin_app/widgets/mybutton.dart';
+import 'package:shopin_app/widgets/notification_button.dart';
 
-import '../../../model/cartmodel.dart';
+import '../provider/product_provider.dart';
 
 class CheckOut extends StatefulWidget {
   const CheckOut({super.key});
@@ -29,7 +27,7 @@ class _CheckOutState extends State<CheckOut> {
   ProductProvider? productProvider;
 
   Widget _buildBottomSingleDetail(
-      {required String startName, required String endName}) {
+      {String startName = "", String endName = ""}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -69,7 +67,7 @@ class _CheckOutState extends State<CheckOut> {
                           "Product Size": c.size,
                         })
                     .toList(),
-                "TotalPrice": total?.toStringAsFixed(2),
+                "TotalPrice": total!.toStringAsFixed(2),
                 "UserName": e.userName,
                 "UserEmail": e.userEmail,
                 "UserNumber": e.userPhoneNumber,
@@ -77,10 +75,12 @@ class _CheckOutState extends State<CheckOut> {
                 "UserId": user?.uid,
               });
               setState(() {
-                myList?.clear();
+                myList!.clear();
               });
 
-              productProvider?.addNotification("Notification");
+              productProvider!.addNotification(
+                "Notification",
+              );
             } else {
               const SnackBar(
                 content: Text(
@@ -123,16 +123,17 @@ class _CheckOutState extends State<CheckOut> {
     }
 
     Future<bool> _onWillPop() async {
-      // Perform any necessary operations before navigating to the HomePage
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (ctx) => const HomePage()));
-
-      // Always return true to allow the back button press
-      return true;
+      return (await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => HomePage(),
+        ),
+      ));
     }
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () async {
+        return _onWillPop();
+      },
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -149,7 +150,7 @@ class _CheckOutState extends State<CheckOut> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
+                  builder: (ctx) => HomePage(),
                 ),
               );
             },
@@ -172,19 +173,21 @@ class _CheckOutState extends State<CheckOut> {
             children: <Widget>[
               Expanded(
                 flex: 2,
-                child: ListView.builder(
-                  itemCount: myList?.length,
-                  itemBuilder: (ctx, myIndex) {
-                    return CheckOutSingleProduct(
-                      index: myIndex,
-                      color: myList![myIndex].color,
-                      size: myList![myIndex].size,
-                      image: myList![myIndex].image,
-                      name: myList![myIndex].name,
-                      price: myList![myIndex].price,
-                      quantity: myList?[myIndex].quantity,
-                    );
-                  },
+                child: Container(
+                  child: ListView.builder(
+                    itemCount: myList!.length,
+                    itemBuilder: (ctx, myIndex) {
+                      return CheckOutSingleProduct(
+                        index: myIndex,
+                        color: myList![myIndex].color,
+                        size: myList![myIndex].size,
+                        image: myList![myIndex].image,
+                        name: myList![myIndex].name,
+                        price: myList![myIndex].price,
+                        quantity: myList![myIndex].quantity,
+                      );
+                    },
+                  ),
                 ),
               ),
               Expanded(

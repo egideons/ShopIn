@@ -4,11 +4,12 @@ class SingleProduct extends StatelessWidget {
   final String image;
   final double price;
   final String name;
-  const SingleProduct(
-      {super.key,
-      required this.image,
-      required this.name,
-      required this.price});
+  const SingleProduct({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.price,
+  });
   @override
   Widget build(BuildContext context) {
     double width, height;
@@ -40,7 +41,7 @@ class SingleProduct extends StatelessWidget {
                 children: [
                   Text(
                     "\$ ${price.toString()}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                         color: Color(0xff9b96d6)),
@@ -48,7 +49,7 @@ class SingleProduct extends StatelessWidget {
                   Container(
                     child: Text(
                       name,
-                      style: TextStyle(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                     ),
                   )
                 ],

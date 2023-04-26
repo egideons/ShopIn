@@ -154,7 +154,7 @@ class CategoryProvider with ChangeNotifier {
       //     image: element.data()["image"],
       //     name: element.data()["name"],
       //     price: element.data()["price"]);
-      // newList.add(shirtData!);
+      // newList.add(shirtData);
     }
     dress = newList;
     notifyListeners();
@@ -176,7 +176,7 @@ class CategoryProvider with ChangeNotifier {
       //     image: element.data()["image"],
       //     name: element.data()["name"],
       //     price: element.data()["price"]);
-      // newList.add(shirtData!);
+      // newList.add(shirtData);
     }
     shoes = newList;
     notifyListeners();
@@ -198,7 +198,7 @@ class CategoryProvider with ChangeNotifier {
       //     image: element.data()["image"],
       //     name: element.data()["name"],
       //     price: element.data()["price"]);
-      // newList.add(shirtData!);
+      // newList.add(shirtData);
     }
     pant = newList;
     notifyListeners();
@@ -220,7 +220,7 @@ class CategoryProvider with ChangeNotifier {
       //     image: element.data()["image"],
       //     name: element.data()["name"],
       //     price: element.data()["price"]);
-      // newList.add(shirtData!);
+      // newList.add(shirtData);
     }
     tie = newList;
     notifyListeners();
@@ -231,7 +231,7 @@ class CategoryProvider with ChangeNotifier {
   }
 
   List<Product>? searchList;
-  void getSearchList({required List<Product> list}) {
+  void getSearchList({List<Product>? list}) {
     searchList = list;
   }
 

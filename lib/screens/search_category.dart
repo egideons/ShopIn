@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopin_app/model/product.dart';
+import 'package:shopin_app/provider/category_provider.dart';
+import 'package:shopin_app/screens/detailscreen.dart';
+import 'package:shopin_app/widgets/singleproduct.dart';
 
-import '../../../model/product.dart';
-import '../../../provider/product_provider.dart';
-import '../../widgets/singleproduct.dart';
-import '../detail screen/detailscreen.dart';
-
-class SearchProduct extends SearchDelegate<void> {
+class SearchCategory extends SearchDelegate<void> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -22,9 +21,7 @@ class SearchProduct extends SearchDelegate<void> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(
-        Icons.arrow_back,
-      ),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -33,10 +30,11 @@ class SearchProduct extends SearchDelegate<void> {
 
   @override
   Widget buildResults(BuildContext context) {
-    ProductProvider providerProvider = Provider.of<ProductProvider>(context);
-    List<Product> searchCategory = providerProvider.searchProductList(query);
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    List<Product> searchCategory = categoryProvider.searchCategoryList(query);
 
     return GridView.count(
+        childAspectRatio: 0.76,
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
@@ -62,12 +60,13 @@ class SearchProduct extends SearchDelegate<void> {
             .toList());
   }
 
+  void getProduct() {}
   @override
   Widget buildSuggestions(BuildContext context) {
-    ProductProvider providerProvider = Provider.of<ProductProvider>(context);
-    List<Product> searchCategory = providerProvider.searchProductList(query);
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    List<Product> searchCategory = categoryProvider.searchCategoryList(query);
     return GridView.count(
-        childAspectRatio: 0.76,
+        childAspectRatio: 0.87,
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,

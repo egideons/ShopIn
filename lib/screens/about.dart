@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
-import 'package:shopin_app/src/app/home/homepage.dart';
+import 'package:shopin_app/screens/homepage.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
@@ -9,12 +9,11 @@ class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<bool> _onWillPop() async {
-      // Perform any necessary operations before navigating to the HomePage
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (ctx) => const HomePage()));
-
-      // Always return true to allow the back button press
-      return true;
+      return (await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => HomePage(),
+        ),
+      ));
     }
 
     return WillPopScope(
@@ -31,7 +30,7 @@ class About extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => const HomePage()));
+                  MaterialPageRoute(builder: (ctx) => HomePage()));
             },
           ),
         ),

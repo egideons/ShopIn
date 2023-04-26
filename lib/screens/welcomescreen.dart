@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopin_app/src/login/login.dart';
-import 'package:shopin_app/src/signup/signup.dart';
+import 'package:shopin_app/screens/login.dart';
+import 'package:shopin_app/screens/signup.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -10,9 +10,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 80,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 80),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -60,18 +58,14 @@ class WelcomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(
+                            0xff746bc9,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               10,
                             ),
                           ),
-                          backgroundColor: const Color(
-                            0xff746bc9,
-                          ),
-                        ),
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
@@ -80,6 +74,10 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                           );
                         },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
                     Row(

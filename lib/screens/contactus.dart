@@ -1,19 +1,19 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../model/usermodel.dart';
-import '../../../provider/product_provider.dart';
-import '../../widgets/mybutton.dart';
-import '../home/homepage.dart';
+import 'package:shopin_app/model/usermodel.dart';
+import 'package:shopin_app/provider/product_provider.dart';
+import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/widgets/mybutton.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ContactUsState createState() => _ContactUsState();
 }
 
@@ -27,11 +27,18 @@ class _ContactUsState extends State<ContactUs> {
   void vaildation() async {
     if (message.text.isEmpty) {
       const SnackBar(
-        content: Text("Please Fill Message"),
+        content: Text(
+          "Please Fill Message",
+        ),
       );
     } else {
       User? user = FirebaseAuth.instance.currentUser;
-      FirebaseFirestore.instance.collection("Message").doc(user?.uid).set({
+      FirebaseFirestore.instance
+          .collection(
+            "Message",
+          )
+          .doc(user?.uid)
+          .set({
         "Name": name,
         "Email": email,
         "Message": message.text,
@@ -39,7 +46,7 @@ class _ContactUsState extends State<ContactUs> {
     }
   }
 
-  Widget _buildSingleField({required String name}) {
+  Widget _buildSingleFlied({String name = ""}) {
     return Container(
       height: 60,
       width: double.infinity,
@@ -78,19 +85,16 @@ class _ContactUsState extends State<ContactUs> {
   }
 
   Future<bool> _onWillPop() async {
-    // Perform any necessary operations before navigating to the HomePage
-    Navigator.of(context).pushReplacement(
+    return (await Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (ctx) => const HomePage(),
+        builder: (ctx) => HomePage(),
       ),
-    );
-
-    // Always return true to allow the back button press
-    return true;
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    print(name);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -106,7 +110,10 @@ class _ContactUsState extends State<ContactUs> {
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => const HomePage()));
+                MaterialPageRoute(
+                  builder: (ctx) => HomePage(),
+                ),
+              );
             },
           ),
         ),
@@ -124,8 +131,8 @@ class _ContactUsState extends State<ContactUs> {
                   fontSize: 28,
                 ),
               ),
-              _buildSingleField(name: name),
-              _buildSingleField(name: email),
+              _buildSingleFlied(name: name),
+              _buildSingleFlied(name: email),
               SizedBox(
                 height: 200,
                 child: TextFormField(

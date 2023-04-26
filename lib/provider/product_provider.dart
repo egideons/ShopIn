@@ -1,7 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import 'package:shopin_app/model/cartmodel.dart';
 import 'package:shopin_app/model/product.dart';
 import 'package:shopin_app/model/usermodel.dart';
@@ -49,20 +51,20 @@ class ProductProvider with ChangeNotifier {
   }
 
   void getCheckOutData({
-    required int quantity,
-    required double price,
-    required String name,
-    required String color,
-    required String size,
-    required String image,
+    int? quantity,
+    double? price,
+    String name = "",
+    String color = "",
+    String size = "",
+    String image = "",
   }) {
     checkOutModel = CartModel(
       color: color,
       size: size,
-      price: price,
+      price: price!,
       name: name,
       image: image,
-      quantity: quantity,
+      quantity: quantity!,
     );
     checkOutModelList.add(checkOutModel!);
   }
@@ -119,7 +121,7 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> homeArchive = [];
 
-  Future<void> getHomeArchiveData() async {
+  Future<void> getHomeAchiveData() async {
     List<Product> newList = [];
     QuerySnapshot featureSnapShot =
         await FirebaseFirestore.instance.collection("homeachive").get();
@@ -139,7 +141,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   List<Product> newArchives = [];
-  Product newArchivesData;
+  Product? newArchivesData;
   Future<void> getNewArchiveData() async {
     List<Product> newList = [];
     QuerySnapshot archivesSnapShot = await FirebaseFirestore.instance
@@ -152,7 +154,7 @@ class ProductProvider with ChangeNotifier {
       //     image: element.data()["image"],
       //     name: element.data()["name"],
       //     price: element.data()["price"]);
-      // newList.add(newArchivesData);
+      // newList.add(newArchivesData!);
     }
     newArchives = newList;
     notifyListeners();
@@ -176,29 +178,13 @@ class ProductProvider with ChangeNotifier {
     return notificationList;
   }
 
-  List<Product> searchList;
-  ProductProvider({
-    required this.feature,
-    this.featureData,
-    required this.checkOutModelList,
-    this.checkOutModel,
-    required this.userModelList,
-    this.userModel,
-    required this.homeFeature,
-    required this.homeArchive,
-    required this.newArchives,
-    required this.newArchivesData,
-    required this.notificationList,
-    required this.searchList,
-  });
-  void getSearchList({
-    required List<Product> list,
-  }) {
+  List<Product>? searchList;
+  void getSearchList({List<Product>? list}) {
     searchList = list;
   }
 
   List<Product> searchProductList(String query) {
-    List<Product> searchShirt = searchList.where((element) {
+    List<Product> searchShirt = searchList!.where((element) {
       return element.name.toUpperCase().contains(query) ||
           element.name.toLowerCase().contains(query);
     }).toList();

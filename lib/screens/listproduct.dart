@@ -5,31 +5,23 @@ import 'package:provider/provider.dart';
 import 'package:shopin_app/model/product.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/src/app/detail%20screen/detailscreen.dart';
-import 'package:shopin_app/src/app/home/homepage.dart';
-import 'package:shopin_app/src/app/search%20category/search_category.dart';
-import 'package:shopin_app/src/app/search%20product/search_product.dart';
-import 'package:shopin_app/src/widgets/notification_button.dart';
-import 'package:shopin_app/src/widgets/singleproduct.dart';
+import 'package:shopin_app/screens/detailscreen.dart';
+import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/screens/search_category.dart';
+import 'package:shopin_app/screens/search_product.dart';
+import 'package:shopin_app/widgets/notification_button.dart';
+import 'package:shopin_app/widgets/singleproduct.dart';
 
 class ListProduct extends StatelessWidget {
-  final String name;
-  bool isCategory = true;
-  final List<Product> snapShot;
-
+  final String? name;
+  bool? isCategory = true;
+  final List<Product>? snapShot;
   ListProduct({
-    super.key,
-    required this.name,
-    required this.isCategory,
-    required this.snapShot,
-  });
-
-  // ListProduct({
-  //   super.key,
-  //   this.name,
-  //   this.isCategory,
-  //   this.snapShot,
-  // });
+    Key? key,
+    this.name,
+    this.isCategory,
+    this.snapShot,
+  }) : super(key: key);
 
   Widget _buildTopName() {
     return Column(
@@ -43,7 +35,7 @@ class ListProduct extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    name,
+                    name!,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -67,7 +59,7 @@ class ListProduct extends StatelessWidget {
         crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
         childAspectRatio: orientation == Orientation.portrait ? 0.8 : 0.9,
         scrollDirection: Axis.vertical,
-        children: snapShot
+        children: snapShot!
             .map(
               (e) => GestureDetector(
                 onTap: () {
@@ -142,9 +134,7 @@ class ListProduct extends StatelessWidget {
         ],
       ),
       body: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: <Widget>[
             _buildTopName(),

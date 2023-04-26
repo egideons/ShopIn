@@ -1,20 +1,23 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:carousel_pro/carousel_pro.dart';
+import 'package:shopin_app/model/categoryicon.dart';
+import 'package:shopin_app/model/usermodel.dart';
+import 'package:shopin_app/screens/about.dart';
+import 'package:shopin_app/screens/checkout.dart';
+import 'package:shopin_app/screens/contactus.dart';
+import 'package:shopin_app/screens/detailscreen.dart';
+import 'package:shopin_app/screens/listproduct.dart';
+import 'package:shopin_app/screens/profilescreen.dart';
+import 'package:shopin_app/widgets/singleproduct.dart';
+
+import '../provider/product_provider.dart';
+import '../provider/category_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
-import 'package:shopin_app/model/product.dart';
-import 'package:shopin_app/provider/category_provider.dart';
-import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/src/app/about/about.dart';
-import 'package:shopin_app/src/app/checkout/checkout.dart';
-import 'package:shopin_app/src/app/contact%20us/contactus.dart';
-import 'package:shopin_app/src/app/detail%20screen/detailscreen.dart';
-import 'package:shopin_app/src/app/list%20product/listproduct.dart';
-import 'package:shopin_app/src/app/profile%20screen/profilescreen.dart';
-import 'package:shopin_app/src/widgets/notification_button.dart';
-import 'package:shopin_app/src/widgets/singleproduct.dart';
+import '../model/product.dart';
+import '../widgets/notification_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,10 +37,10 @@ Product? bulbData;
 Product? smartPhoneData;
 
 class _HomePageState extends State<HomePage> {
-  Widget _buildCategoryProduct({required String image, required int color}) {
+  Widget _buildCategoryProduct({String image = "", int? color}) {
     return CircleAvatar(
       maxRadius: height! * 0.1 / 2.1,
-      backgroundColor: Color(color),
+      backgroundColor: Color(color!),
       child: SizedBox(
         height: 40,
         child: Image(
@@ -48,8 +51,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  double? height;
-  double? width;
+  double? height, width;
   bool homeColor = true;
 
   bool checkoutColor = false;
@@ -60,19 +62,21 @@ class _HomePageState extends State<HomePage> {
   bool profileColor = false;
   MediaQueryData? mediaQuery;
   Widget _buildUserAccountsDrawerHeader() {
-    List userModel = productProvider!.userModelList;
+    List<UserModel> userModel = productProvider!.userModelList;
     return Column(
         children: userModel.map((e) {
       return UserAccountsDrawerHeader(
         accountName: Text(
           e.userName,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(
+            color: Colors.black,
+          ),
         ),
-        currentAccountPicture: const CircleAvatar(
+        currentAccountPicture: CircleAvatar(
           backgroundColor: Colors.white,
-          // backgroundImage: e.userImage == null
-          //     ? const AssetImage("images/userImage.png")
-          //     : NetworkImage(e.userImage),
+          backgroundImage: e.userImage == null
+              ? const AssetImage("images/userImage.png")
+              : e.userImage as ImageProvider<Object>,
         ),
         decoration: const BoxDecoration(color: Color(0xfff2f2f2)),
         accountEmail:
@@ -111,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                 aboutColor = false;
               });
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => CheckOut()));
+                  MaterialPageRoute(builder: (ctx) => const CheckOut()));
             },
             leading: const Icon(Icons.shopping_cart),
             title: const Text("Checkout"),
@@ -127,7 +131,10 @@ class _HomePageState extends State<HomePage> {
                 checkoutColor = false;
               });
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => const About()));
+                MaterialPageRoute(
+                  builder: (ctx) => const About(),
+                ),
+              );
             },
             leading: const Icon(Icons.info),
             title: const Text("About"),
@@ -142,11 +149,11 @@ class _HomePageState extends State<HomePage> {
                 profileColor = true;
                 checkoutColor = false;
               });
-              // Navigator.of(context).pushReplacement(
-              //   MaterialPageRoute(
-              //     builder: (ctx) => ProfileScreen(),
-              //   ),
-              // );
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => ProfileScreen(),
+                ),
+              );
             },
             leading: const Icon(Icons.info),
             title: const Text("Profile"),
@@ -162,7 +169,10 @@ class _HomePageState extends State<HomePage> {
                 aboutColor = false;
               });
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => ContactUs()));
+                MaterialPageRoute(
+                  builder: (ctx) => const ContactUs(),
+                ),
+              );
             },
             leading: const Icon(Icons.phone),
             title: const Text("Contant Us"),
@@ -186,29 +196,35 @@ class _HomePageState extends State<HomePage> {
         autoplay: true,
         showIndicator: false,
         images: const [
-          AssetImage("images/man.jpg"),
-          AssetImage("images/women.jpg"),
-          AssetImage("images/camera.jpg"),
+          AssetImage(
+            "images/man.jpg",
+          ),
+          AssetImage(
+            "images/women.jpg",
+          ),
+          AssetImage(
+            "images/camera.jpg",
+          ),
         ],
       ),
     );
   }
 
   Widget _buildDressIcon() {
-    List dressIcon = categoryProvider!.getDressIcon;
-    List dress = categoryProvider!.getDressList;
+    List<CategoryIcon> dressIcon = categoryProvider!.getDressIcon;
+    List<Product> dress = categoryProvider!.getDressList;
     return Row(
         children: dressIcon.map((e) {
       return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (ctx) => ListProduct(
-          //       name: "Dress",
-          //       snapShot: dress,
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Dress",
+                snapShot: dress,
+              ),
+            ),
+          );
         },
         child: _buildCategoryProduct(image: e.image, color: 0xff33dcfd),
       );
@@ -216,20 +232,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildShirtIcon() {
-    List shirts = categoryProvider!.getShirtList;
-    List shirtIcon = categoryProvider!.getShirtIconData;
+    List<Product> shirts = categoryProvider!.getShirtList;
+    List<CategoryIcon> shirtIcon = categoryProvider!.getShirtIconData;
     return Row(
         children: shirtIcon.map((e) {
       return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (ctx) => ListProduct(
-          //       name: "Shirt",
-          //       snapShot: shirts,
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Shirt",
+                snapShot: shirts,
+              ),
+            ),
+          );
         },
         child: _buildCategoryProduct(image: e.image, color: 0xfff38cdd),
       );
@@ -237,20 +253,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildShoeIcon() {
-    List shoeIcon = categoryProvider!.getShoeIcon;
-    List shoes = categoryProvider!.getshoesList;
+    List<CategoryIcon> shoeIcon = categoryProvider!.getShoeIcon;
+    List<Product> shoes = categoryProvider!.getshoesList;
     return Row(
         children: shoeIcon.map((e) {
       return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (ctx) => ListProduct(
-          //       name: "Shoes",
-          //       snapShot: shoes,
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Shoes",
+                snapShot: shoes,
+              ),
+            ),
+          );
         },
         child: _buildCategoryProduct(
           image: e.image,
@@ -261,20 +277,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildPantIcon() {
-    List pantIcon = categoryProvider!.getPantIcon;
-    List pant = categoryProvider!.getPantList;
+    List<CategoryIcon> pantIcon = categoryProvider!.getPantIcon;
+    List<Product> pant = categoryProvider!.getPantList;
     return Row(
         children: pantIcon.map((e) {
       return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (ctx) => ListProduct(
-          //       name: "Pant",
-          //       snapShot: pant,
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Pant",
+                snapShot: pant,
+              ),
+            ),
+          );
         },
         child: _buildCategoryProduct(
           image: e.image,
@@ -285,20 +301,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildTieIcon() {
-    List tieIcon = categoryProvider!.getTieIcon;
-    List tie = categoryProvider!.getTieList;
+    List<CategoryIcon> tieIcon = categoryProvider!.getTieIcon;
+    List<Product> tie = categoryProvider!.getTieList;
     return Row(
         children: tieIcon.map((e) {
       return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (ctx) => ListProduct(
-          //       name: "Tie",
-          //       snapShot: tie,
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Tie",
+                snapShot: tie,
+              ),
+            ),
+          );
         },
         child: _buildCategoryProduct(
           image: e.image,
@@ -340,7 +356,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildFeature() {
-    List featureProduct;
+    List<Product> featureProduct;
 
     featureProduct = productProvider!.getFeatureList;
 
@@ -355,15 +371,15 @@ class _HomePageState extends State<HomePage> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (ctx) => ListProduct(
-                //       name: "Featured",
-                //       isCategory: false,
-                //       snapShot: featureProduct,
-                //     ),
-                //   ),
-                // );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Featured",
+                      isCategory: false,
+                      snapShot: featureProduct,
+                    ),
+                  ),
+                );
               },
               child: const Text(
                 "View more",
@@ -402,7 +418,10 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (ctx) => DetailScreen(
-                              image: e.image, price: e.price, name: e.name),
+                            image: e.image,
+                            price: e.price,
+                            name: e.name,
+                          ),
                         ),
                       );
                     },
@@ -421,8 +440,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNewArchives() {
-    List newArchivesProduct = productProvider!.getNewArchivesList;
+  Widget _buildNewAchives() {
+    List<Product> newArchivesProduct = productProvider!.getNewArchivesList;
     return Column(
       children: <Widget>[
         SizedBox(
@@ -439,15 +458,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).pushReplacement(
-                      //   MaterialPageRoute(
-                      //     builder: (ctx) => ListProduct(
-                      //       name: "NewArchives",
-                      //       isCategory: false,
-                      //       snapShot: newArchivesProduct,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (ctx) => ListProduct(
+                            name: "NewAchvies",
+                            isCategory: false,
+                            snapShot: newArchivesProduct,
+                          ),
+                        ),
+                      );
                     },
                     child: const Text(
                       "View more",
@@ -527,7 +546,7 @@ class _HomePageState extends State<HomePage> {
     productProvider!.getNewArchiveData();
     productProvider!.getFeatureData();
     productProvider!.getHomeFeatureData();
-    productProvider!.getHomeArchiveData();
+    productProvider!.getHomeAchiveData();
     categoryProvider!.getShirtIcon();
     categoryProvider!.getshoesIconData();
     categoryProvider!.getPantIconData();
@@ -583,7 +602,7 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                   ),
                   _buildFeature(),
-                  _buildNewArchives()
+                  _buildNewAchives()
                 ],
               ),
             )

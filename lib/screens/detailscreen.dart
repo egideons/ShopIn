@@ -1,26 +1,25 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopin_app/src/app/checkout/checkout.dart';
-import 'package:shopin_app/src/app/home/homepage.dart';
-import 'package:shopin_app/src/widgets/notification_button.dart';
+import 'package:shopin_app/screens/checkout.dart';
+import 'package:shopin_app/screens/homepage.dart';
+import 'package:shopin_app/widgets/mybutton.dart';
+import 'package:shopin_app/widgets/notification_button.dart';
 
-import '../../../provider/product_provider.dart';
-import '../../widgets/mybutton.dart';
+import '../provider/product_provider.dart';
 
 class DetailScreen extends StatefulWidget {
-  final String image;
-  final String name;
-  final double price;
+  final String image = "";
+  final String name = "";
+  final double? price;
   const DetailScreen({
-    super.key,
-    required this.image,
-    required this.name,
-    required this.price,
-  });
+    Key? key,
+    this.price,
+    required String image,
+    required String name,
+  }) : super(key: key);
   @override
-  // ignore: library_private_types_in_public_api
   _DetailScreenState createState() => _DetailScreenState();
 }
 
@@ -28,7 +27,7 @@ class _DetailScreenState extends State<DetailScreen> {
   int count = 1;
   ProductProvider? productProvider;
 
-  Widget _buildColorProduct({required Color? color}) {
+  Widget _buildColorProduct({Color? color}) {
     return Container(
       height: 40,
       width: 40,
@@ -51,7 +50,9 @@ class _DetailScreenState extends State<DetailScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(widget.image),
+                  image: NetworkImage(
+                    widget.image,
+                  ),
                 ),
               ),
             ),
@@ -299,7 +300,7 @@ class _DetailScreenState extends State<DetailScreen> {
         onPressed: () {
           getSize();
           getColor();
-          productProvider?.getCheckOutData(
+          productProvider!.getCheckOutData(
             image: widget.image,
             color: color,
             size: size,
@@ -318,12 +319,11 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    // Perform any necessary operations before navigating to the HomePage
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (ctx) => const HomePage()));
-
-    // Always return true to allow the back button press
-    return true;
+    return (await Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (ctx) => HomePage(),
+      ),
+    ));
   }
 
   @override
@@ -346,7 +346,7 @@ class _DetailScreenState extends State<DetailScreen> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
+                  builder: (ctx) => HomePage(),
                 ),
               );
             },

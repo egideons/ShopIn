@@ -1,29 +1,28 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: library_private_types_in_public_api, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
 
 class CheckOutSingleProduct extends StatefulWidget {
-  final String name;
-  final String image;
-  final int index;
-  final String color;
-  final String size;
+  final String? name;
+  final String? image;
+  final int? index;
+  final String? color;
+  final String? size;
   final quantity;
-  final double price;
+  final double? price;
   const CheckOutSingleProduct({
     super.key,
-    required this.index,
-    required this.color,
-    required this.size,
+    this.index,
+    this.color,
+    this.size,
     this.quantity,
-    required this.image,
-    required this.name,
-    required this.price,
+    this.image,
+    this.name,
+    this.price,
   });
   @override
-  // ignore: library_private_types_in_public_api
   _CheckOutSingleProductState createState() => _CheckOutSingleProductState();
 }
 
@@ -39,7 +38,7 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
-          image: NetworkImage(widget.image),
+          image: NetworkImage(widget.image as String),
         ),
       ),
     );
@@ -52,13 +51,13 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            widget.name,
+            widget.name as String,
             style: myStyle,
           ),
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              productProvider!.deleteCheckoutProduct(widget.index);
+              productProvider!.deleteCheckoutProduct(widget.index as int);
             },
           ),
         ],
@@ -73,11 +72,11 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            widget.color,
+            widget.color as String,
             style: myStyle,
           ),
           Text(
-            widget.size,
+            widget.size as String,
             style: myStyle,
           )
         ],
@@ -133,7 +132,7 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
                         _buildNameAndClosePart(),
                         _buildColorAndSizePart(),
                         Text(
-                          "\$${widget.price.toStringAsFixed(2)}",
+                          "\$${widget.price!.toStringAsFixed(2)}",
                           style: const TextStyle(
                               color: Color(0xff9b96d6),
                               fontSize: 18,
