@@ -4,7 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shopin_app/model/usermodel.dart';
+import 'package:shopin_app/screens/signup/modules/firsthalf.dart';
 import 'package:shopin_app/screens/signup/modules/gobacktologinfield.dart';
+import 'package:shopin_app/screens/signup/modules/signupCustomTextField.dart';
+import 'package:shopin_app/splash%20screens/signup_splashscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 import 'package:shopin_app/utils/showSnackBar.dart';
@@ -32,11 +36,12 @@ RegExp phoneRegExp = RegExp(
 );
 
 bool obscureText = true;
-final TextEditingController email = TextEditingController();
-final TextEditingController userName = TextEditingController();
-final TextEditingController phoneNumber = TextEditingController();
-final TextEditingController password = TextEditingController();
-final TextEditingController address = TextEditingController();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController userNameController = TextEditingController();
+final TextEditingController phoneNumberController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmPasswordController = TextEditingController();
+final TextEditingController addressController = TextEditingController();
 
 bool isMale = true;
 bool isLoading = false;
@@ -50,21 +55,39 @@ class _SignUpState extends State<SignUp> {
 
   postUserDetailsToFirestore() async {
     // calling our firestore
-    UserCredential? result;
+    // calling our user model
+    // sendiing these values
 
-    FirebaseFirestore.instance.collection("User").doc(result!.user?.uid).set({
-      "UserName": userName.text,
-      "UserId": result.user?.uid,
-      "userEmail": email.text,
-      "userAddress": address.text,
-      "userGender": isMale == true ? "Male" : "Female",
-      "UserNumber": phoneNumber.text,
-    });
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel = UserModel();
+
+    // writing all the values
+    userModel.userEmail = user!.email;
+    userModel.userId = user.uid;
+    userModel.userName = userNameController.text;
+    userModel.userPhoneNumber = phoneNumberController.text;
+    userModel.userPassword = passwordController.text;
+    userModel.userAddress = addressController.text;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+
     showSnackBar(
       context,
       "Your account has been successfully registered",
       kSuccessColor,
     );
+
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(
+          builder: (context) => const Signup_SplashScreen(),
+        ),
+        (route) => false);
   }
 
   @override
@@ -72,282 +95,327 @@ class _SignUpState extends State<SignUp> {
     return GestureDetector(
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: kSecondaryColor,
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: const <Widget>[
-                        Text(
-                          "Register",
-                          style: TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          children: [
+            const SignupPageFirstHalf(),
+            kHalfSizedBox,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    kDefaultPadding * 3,
                   ),
-                  Container(
-                    height: 540,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 10,
+                  topRight: Radius.circular(
+                    kDefaultPadding * 3,
+                  ),
+                ),
+                color: kSecondaryColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(
+                  kDefaultPadding,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: kDefaultPadding,
                     ),
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        TextFormField(
-                          keyboardType: TextInputType.name,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please fill in your Username";
-                            } //Min. of 3 characters
-                            else if (value.length < 4) {
-                              return "Username is too short";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your username',
-                            labelText: "Username",
-                            hintStyle: TextStyle(
-                              color: kBlackColor,
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SignupCustomTextFormField(
+                            controller: userNameController,
+                            keyboadType: TextInputType.name,
+                            hintText: "Enter your first name",
+                            labelText: "First Name",
+                            obscureText: false,
+                            onSaved: (value) {
+                              userNameController.text = value!;
+                            },
+                            formValidator: (value) {
+                              RegExp firstNamePattern = RegExp(
+                                r'^.{3,}$',
+                              );
+                              if (value!.isEmpty) {
+                                return "Please enter your first name";
+                              } else if (!firstNamePattern.hasMatch(value)) {
+                                return "Enter your first name(Min. of 3 characters)";
+                              }
+                              return null;
+                            },
+                            prefixIcon: Icon(
+                              Icons.account_circle,
+                              color: kPrimaryColor,
                             ),
-                            border: OutlineInputBorder(),
+                            textInputAction: TextInputAction.next,
                           ),
-                        ),
-                        kHalfSizedBox,
-                        TextFormField(
-                          controller: email,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please fill in your Email";
-                            } else if (!emailRegExp.hasMatch(value)) {
-                              return "Email is invalid";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: "Enter your email",
-                            labelText: "Email",
-                            hintStyle: TextStyle(
-                              color: kBlackColor,
+                          kSizedBox,
+                          SignupCustomTextFormField(
+                            controller: emailController,
+                            keyboadType: TextInputType.emailAddress,
+                            hintText: "Enter your email address",
+                            labelText: "Email Address",
+                            obscureText: false,
+                            onSaved: (value) {
+                              emailController.text = value!;
+                            },
+                            formValidator: (value) {
+                              RegExp emailPattern = RegExp(
+                                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                              );
+                              if (value!.isEmpty) {
+                                return "Enter your email address";
+                              } else if (!emailPattern.hasMatch(value)) {
+                                return "Please enter a valid email address";
+                              }
+                              return null;
+                            },
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: kPrimaryColor,
                             ),
-                            border: OutlineInputBorder(),
+                            textInputAction: TextInputAction.next,
                           ),
-                        ),
-                        kHalfSizedBox,
-                        TextFormField(
-                          keyboardType: TextInputType.phone,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please fill in your phone number";
-                            } else if (!phoneRegExp.hasMatch(
-                              value,
-                            )) {
-                              return "Phone number is invalid";
-                            } else if (value.length < 10 && value.length > 11) {
-                              return "Phone number is too short";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your phone number',
+                          kSizedBox,
+                          SignupCustomTextFormField(
+                            controller: phoneNumberController,
+                            keyboadType: TextInputType.phone,
+                            hintText: "Enter your phone number",
                             labelText: "Phone Number",
-                            hintStyle: TextStyle(
-                              color: kBlackColor,
+                            obscureText: false,
+                            onSaved: (value) {
+                              phoneNumberController.text = value!;
+                            },
+                            formValidator: (value) {
+                              RegExp mobilePattern = RegExp(
+                                r'(^(?:[+0]9)?[0-9]{10,12}$)',
+                              );
+
+                              if (value!.isEmpty) {
+                                return "Enter your phone number";
+                              } else if (!mobilePattern.hasMatch(value)) {
+                                return "Enter a valid phone number";
+                              }
+                              return null;
+                            },
+                            prefixIcon: Icon(
+                              Icons.phone_rounded,
+                              color: kPrimaryColor,
                             ),
-                            border: OutlineInputBorder(),
+                            textInputAction: TextInputAction.next,
                           ),
-                        ),
-                        kHalfSizedBox,
-                        TextFormField(
-                          controller: password,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          obscureText: obscureText,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please fill in your password";
-                            } else if (value.length < 8) {
-                              return "Password is too short";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
+                          kSizedBox,
+                          SignupCustomTextFormField(
+                            controller: addressController,
+                            keyboadType: TextInputType.streetAddress,
+                            labelText: "Address",
+                            hintText: "Enter your address",
+                            obscureText: false,
+                            onSaved: (value) {
+                              addressController.text = value!;
+                            },
+                            prefixIcon: Icon(
+                              Icons.house_sharp,
+                              color: kPrimaryColor,
+                            ),
+                            textInputAction: TextInputAction.next,
+                            formValidator: (value) {
+                              RegExp addressPattern = RegExp(
+                                r'^[#.0-9a-zA-Z\s,-]+$',
+                              );
+
+                              if (value!.isEmpty) {
+                                return "Enter your address";
+                              } else if (!addressPattern.hasMatch(value)) {
+                                return "Enter a valid address";
+                              }
+                              return null;
+                            },
+                          ),
+                          kSizedBox,
+                          SignupCustomTextFormField(
+                            controller: passwordController,
+                            keyboadType: TextInputType.visiblePassword,
                             hintText: "Enter your password",
                             labelText: "Password",
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  obscureText = !obscureText;
-                                });
-                                FocusScope.of(context).unfocus();
-                              },
-                              child: obscureText
-                                  ? Icon(
-                                      Icons.visibility,
-                                      color: kPrimaryColor,
-                                    )
-                                  : const Icon(
-                                      Icons.visibility_off,
-                                      color: kBlackColor,
-                                    ),
+                            obscureText: true,
+                            onSaved: (value) {
+                              passwordController.text = value!;
+                            },
+                            formValidator: (value) {
+                              RegExp passwordPattern = RegExp(
+                                r'^.{8,}$',
+                              );
+                              if (value!.isEmpty) {
+                                return "Please enter your password";
+                              } else if (!passwordPattern.hasMatch(value)) {
+                                return "Password must be at least 8 characters";
+                              }
+                              return null;
+                            },
+                            prefixIcon: Icon(
+                              Icons.password_rounded,
+                              color: kPrimaryColor,
                             ),
-                            hintStyle: const TextStyle(
-                              color: kBlackColor,
-                            ),
-                            border: const OutlineInputBorder(),
+                            textInputAction: TextInputAction.next,
                           ),
-                        ),
-                        kHalfSizedBox,
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isMale = !isMale;
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            padding: const EdgeInsets.only(left: 10),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey)),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    isMale == true ? "Male" : "Female",
-                                    style: const TextStyle(
-                                      color: kTextGreyColor,
-                                      fontSize: 18,
+                          kSizedBox,
+                          SignupCustomTextFormField(
+                            controller: confirmPasswordController,
+                            keyboadType: TextInputType.visiblePassword,
+                            hintText: "Confirm your password",
+                            labelText: "Confirm password",
+                            obscureText: true,
+                            onSaved: (value) {
+                              confirmPasswordController.text = value!;
+                            },
+                            formValidator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please confirm your password";
+                              } else if (confirmPasswordController.text !=
+                                  passwordController.text) {
+                                return "Password does not match";
+                              }
+                              return null;
+                            },
+                            prefixIcon: Icon(
+                              Icons.password_rounded,
+                              color: kPrimaryColor,
+                            ),
+                            textInputAction: TextInputAction.done,
+                          ),
+                          kSizedBox,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isMale = !isMale;
+                              });
+                            },
+                            child: Container(
+                              height: 60,
+                              padding: const EdgeInsets.only(left: 10),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      isMale == true ? "Male" : "Female",
+                                      style: const TextStyle(
+                                        color: kTextGreyColor,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                  isMale == true
-                                      ? const Icon(
-                                          Icons.male,
-                                          color: kGreyColor1,
-                                        )
-                                      : const Icon(
-                                          Icons.female,
-                                          color: kGreyColor1,
-                                        ),
-                                ],
+                                    isMale == true
+                                        ? const Icon(
+                                            Icons.male,
+                                            color: kGreyColor1,
+                                          )
+                                        : const Icon(
+                                            Icons.female,
+                                            color: kGreyColor1,
+                                          ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        kHalfSizedBox,
-                        SizedBox(
-                          height: 45,
-                          width: double.infinity,
-                          child: isLoading == false
-                              ? ElevatedButton(
-                                  onPressed: () {
-                                    (() async {
-                                      if (_formKey.currentState!.validate()) {
-                                        try {
-                                          await _auth
-                                              .createUserWithEmailAndPassword(
-                                                email: email.text,
-                                                password: password.text,
-                                              )
-                                              .then(
-                                                (value) => {
-                                                  setState(() {
-                                                    const CircularProgressIndicator(
-                                                      color: kSecondaryColor,
-                                                    );
-                                                  }),
-                                                  postUserDetailsToFirestore()
-                                                },
-                                              )
-                                              .catchError((e) {
-                                            showSnackBar(context, e.message,
-                                                kPrimaryColor);
-                                          });
-                                        } on FirebaseAuthException catch (error) {
-                                          switch (error.code) {
-                                            case "invalid-email":
-                                              errorMessage =
-                                                  "Wrong email address was entered, check email.";
+                          kSizedBox,
+                          SizedBox(
+                            height: 45,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                (() async {
+                                  if (_formKey.currentState!.validate()) {
+                                    try {
+                                      await _auth
+                                          .createUserWithEmailAndPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          )
+                                          .then(
+                                            (value) => {
+                                              setState(() {
+                                                const CircularProgressIndicator(
+                                                  color: kSecondaryColor,
+                                                );
+                                              }),
+                                              postUserDetailsToFirestore()
+                                            },
+                                          )
+                                          .catchError((e) {
+                                        showSnackBar(
+                                            context, e.message, kPrimaryColor);
+                                      });
+                                    } on FirebaseAuthException catch (error) {
+                                      switch (error.code) {
+                                        case "invalid-email":
+                                          errorMessage =
+                                              "Wrong email address was entered, check email.";
 
-                                              break;
-                                            case "wrong-password":
-                                              errorMessage =
-                                                  "Wrong password was entered, check password.";
-                                              break;
-                                            case "user-not-found":
-                                              errorMessage =
-                                                  "The account with this email and password does not exist.";
-                                              break;
-                                            case "user-disabled":
-                                              errorMessage =
-                                                  "The user with this email has been banned.";
-                                              break;
-                                            case "too-many-requests":
-                                              errorMessage =
-                                                  "Too many requests";
-                                              break;
-                                            case "operation-not-allowed":
-                                              errorMessage =
-                                                  "Signing in with Email and Password is not enabled.";
-                                              break;
-                                            default:
-                                              errorMessage =
-                                                  "Check your internet connection.";
-                                          }
-
-                                          showSnackBar(
-                                            context,
-                                            errorMessage!,
-                                            kErrorColor,
-                                          ); // D
-                                          return (error.code);
-                                        }
+                                          break;
+                                        case "wrong-password":
+                                          errorMessage =
+                                              "Wrong password was entered, check password.";
+                                          break;
+                                        case "user-not-found":
+                                          errorMessage =
+                                              "The account with this email and password does not exist.";
+                                          break;
+                                        case "user-disabled":
+                                          errorMessage =
+                                              "The user with this email has been banned.";
+                                          break;
+                                        case "too-many-requests":
+                                          errorMessage = "Too many requests";
+                                          break;
+                                        case "operation-not-allowed":
+                                          errorMessage =
+                                              "Signing in with Email and Password is not enabled.";
+                                          break;
+                                        default:
+                                          errorMessage =
+                                              "Check your internet connection.";
                                       }
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: kTextWhiteColor,
-                                    backgroundColor: kPrimaryColor,
-                                  ),
-                                  child: const Text(
-                                    "Register",
-                                  ),
-                                )
-                              : const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                        ),
-                        kHalfSizedBox,
-                        const GoBackToLoginField(),
-                        kHalfSizedBox,
-                      ],
+
+                                      showSnackBar(
+                                        context,
+                                        errorMessage!,
+                                        kErrorColor,
+                                      ); // D
+                                      return (error.code);
+                                    }
+                                  }
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: kTextWhiteColor,
+                                backgroundColor: kPrimaryColor,
+                              ),
+                              child: const Text(
+                                "Register",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: kDefaultPadding / 2,
+                    ),
+                    const GoBackToLoginField(),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

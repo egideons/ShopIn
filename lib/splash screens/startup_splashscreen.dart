@@ -1,10 +1,8 @@
 // ignore_for_file: camel_case_types
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
-import 'package:shopin_app/screens/welcome/welcomescreen.dart';
+import 'package:shopin_app/services/userAuthenticate.dart';
 import 'package:shopin_app/styles/colors.dart';
 
 class Startup_SplashScreen extends StatelessWidget {
@@ -14,15 +12,10 @@ class Startup_SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 4), () {
-      StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage();
-          } else {
-            return const WelcomeScreen();
-          }
-        },
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UserSnapshot(),
+        ),
       );
     });
     return Scaffold(
@@ -52,7 +45,7 @@ class Startup_SplashScreen extends StatelessWidget {
                 top: 20,
               ),
               child: Text(
-                "ShopIn",
+                "Enjoy a great shopping experience",
                 style: TextStyle(
                   fontSize: 18,
                   color: kPrimaryColor,
@@ -73,13 +66,6 @@ class Startup_SplashScreen extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 100,
-                    ),
-                    Image(
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height / 35,
-                      image: const AssetImage(
-                        "assets/images/logo/edura logo/powered by edura.png",
-                      ),
                     ),
                   ],
                 ),

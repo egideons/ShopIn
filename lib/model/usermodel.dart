@@ -1,5 +1,5 @@
 class UserModel {
-  String userName,
+  String? userName,
       userId,
       userPassword,
       userEmail,
@@ -8,14 +8,14 @@ class UserModel {
       userImage,
       userAddress;
   UserModel(
-      {required this.userEmail,
-      required this.userId,
-      required this.userPassword,
-      required this.userImage,
-      required this.userAddress,
-      required this.userGender,
-      required this.userName,
-      required this.userPhoneNumber});
+      {this.userEmail,
+      this.userId,
+      this.userPassword,
+      this.userImage,
+      this.userAddress,
+      this.userGender,
+      this.userName,
+      this.userPhoneNumber});
 
   // receiving data from server
   factory UserModel.fromMap(map) {

@@ -71,12 +71,15 @@ class _ContactUsState extends State<ContactUs> {
 
   @override
   void initState() {
+    //Firebase User
+    UserModel loggedInUser = UserModel();
+
     ProductProvider provider;
     provider = Provider.of<ProductProvider>(context, listen: false);
     List<UserModel> user = provider.userModelList;
     user.map((e) {
-      name = e.userName;
-      email = e.userEmail;
+      name = loggedInUser.userName!;
+      email = loggedInUser.userEmail!;
 
       return Container();
     }).toList();

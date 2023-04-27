@@ -24,6 +24,25 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  //Firebase User
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        loggedInUser = UserModel.fromMap(value.data());
+        setState(() {});
+      });
+    }
+  }
+
   UserModel? userModel;
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController address = TextEditingController();
@@ -164,23 +183,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildSingleContainer(
-            endText: userModel!.userName,
+            endText: "${loggedInUser.userName}",
             startText: "Name",
           ),
           _buildSingleContainer(
-            endText: userModel!.userEmail,
+            endText: "${loggedInUser.userEmail}",
             startText: "Email",
           ),
           _buildSingleContainer(
-            endText: userModel!.userGender,
+            endText: "${loggedInUser.userGender}",
             startText: "Gender",
           ),
           _buildSingleContainer(
-            endText: userModel!.userPhoneNumber,
+            endText: "${loggedInUser.userPhoneNumber}",
             startText: "Phone Number",
           ),
           _buildSingleContainer(
-            endText: userModel!.userAddress,
+            endText: "${loggedInUser.userAddress}",
             startText: "Address",
           ),
         ],
@@ -236,7 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           _buildSingleContainer(
             color: Colors.grey[300],
-            endText: userModel!.userEmail,
+            endText: "${loggedInUser.userEmail}",
             startText: "Email",
           ),
           GestureDetector(

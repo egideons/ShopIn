@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopin_app/model/categoryicon.dart';
 import 'package:shopin_app/model/usermodel.dart';
 import 'package:shopin_app/screens/about.dart';
@@ -14,7 +16,6 @@ import '../../provider/product_provider.dart';
 import '../../provider/category_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:provider/provider.dart';
 import '../../model/product.dart';
 import '../../widgets/notification_button.dart';
@@ -37,6 +38,25 @@ Product? bulbData;
 Product? smartPhoneData;
 
 class _HomePageState extends State<HomePage> {
+//Firebase User
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        loggedInUser = UserModel.fromMap(value.data());
+        setState(() {});
+      });
+    }
+  }
+
   Widget _buildCategoryProduct({String image = "", int? color}) {
     return CircleAvatar(
       maxRadius: height! * 0.1 / 2.1,
@@ -67,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         children: userModel.map((e) {
       return UserAccountsDrawerHeader(
         accountName: Text(
-          e.userName,
+          "{${loggedInUser.userName}",
           style: const TextStyle(
             color: Colors.black,
           ),
@@ -79,8 +99,12 @@ class _HomePageState extends State<HomePage> {
               : e.userImage as ImageProvider<Object>,
         ),
         decoration: const BoxDecoration(color: Color(0xfff2f2f2)),
-        accountEmail:
-            Text(e.userEmail, style: const TextStyle(color: Colors.black)),
+        accountEmail: Text(
+          "${loggedInUser.userName}",
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
       );
     }).toList());
   }
