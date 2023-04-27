@@ -69,9 +69,9 @@ class _CheckOutState extends State<CheckOut> {
                     .toList(),
                 "TotalPrice": total!.toStringAsFixed(2),
                 "UserName": e.userName,
-                "UserEmail": e.userEmail,
+                "userEmail": e.userEmail,
                 "UserNumber": e.userPhoneNumber,
-                "UserAddress": e.userAddress,
+                "userAddress": e.userAddress,
                 "UserId": user?.uid,
               });
               setState(() {
@@ -125,7 +125,7 @@ class _CheckOutState extends State<CheckOut> {
     Future<bool> _onWillPop() async {
       return (await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) => HomePage(),
+          builder: (ctx) => const HomePage(),
         ),
       ));
     }
@@ -150,12 +150,12 @@ class _CheckOutState extends State<CheckOut> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => HomePage(),
+                  builder: (ctx) => const HomePage(),
                 ),
               );
             },
           ),
-          actions: <Widget>[
+          actions: const <Widget>[
             NotificationButton(),
           ],
         ),

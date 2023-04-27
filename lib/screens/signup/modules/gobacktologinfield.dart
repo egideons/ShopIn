@@ -38,7 +38,7 @@ class GoBackToLoginField extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: kAccentColor,
+                  color: kPrimaryColor,
                 ),
               ),
             ],

@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
               });
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => ProfileScreen(),
+                  builder: (ctx) => const ProfileScreen(),
                 ),
               );
             },
@@ -581,7 +581,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               _key.currentState!.openDrawer();
             }),
-        actions: <Widget>[
+        actions: const <Widget>[
           NotificationButton(),
         ],
       ),

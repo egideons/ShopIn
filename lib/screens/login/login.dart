@@ -2,12 +2,12 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shopin_app/screens/login/modules/forgotpasswordfield.dart';
 import 'package:shopin_app/screens/login/modules/gotosignupfield.dart';
-import 'package:shopin_app/screens/signup/signup.dart';
+import 'package:shopin_app/splash%20screens/login_splashscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
+import 'package:shopin_app/utils/showSnackBar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,6 +17,10 @@ class Login extends StatefulWidget {
 }
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+//Firebase Authentication
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 bool isLoading = false;
 
 const String emailPattern =
@@ -33,75 +37,10 @@ final TextEditingController password = TextEditingController();
 bool obscureText = true;
 
 class _LoginState extends State<Login> {
-  void submit(context) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      UserCredential result =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email.text,
-        password: password.text,
-      );
-      print(result);
-    } on PlatformException catch (error) {
-      var message = "Please Check Your Internet Connection ";
-      if (error.message != null) {
-        message = error.message!;
-      }
-      SnackBar(
-        content: Text(message.toString()),
-        duration: const Duration(
-          milliseconds: 800,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-      );
-      setState(() {
-        isLoading = false;
-      });
-    } catch (error) {
-      setState(() {
-        isLoading = false;
-      });
-      Text(error.toString());
-      const Duration(
-        milliseconds: 800,
-      );
-      Theme.of(context).primaryColor;
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  void validation() async {
-    if (email.text.isEmpty && password.text.isEmpty) {
-      const SnackBar(
-        content: Text("Both Fields Are Empty"),
-      );
-    } else if (email.text.isEmpty) {
-      const SnackBar(
-        content: Text("Email Is Empty"),
-      );
-    } else if (!emailRegExp.hasMatch(email.text)) {
-      const SnackBar(
-        content: Text("Please Try Vaild Email"),
-      );
-    } else if (password.text.isEmpty) {
-      const SnackBar(
-        content: Text("Password Is Empty"),
-      );
-    } else if (password.text.length < 8) {
-      const SnackBar(
-        content: Text("Password  Is Too Short"),
-      );
-    } else {
-      submit(context);
-    }
-  }
-
   String _password = "";
+
+  //Error Message
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +48,10 @@ class _LoginState extends State<Login> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: kSecondaryColor,
+        ),
         body: Form(
           key: _formKey,
           child: Container(
@@ -119,7 +62,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 350,
+                  height: 400,
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -211,9 +154,73 @@ class _LoginState extends State<Login> {
                         width: double.infinity,
                         child: isLoading == false
                             ? ElevatedButton(
-                                onPressed: () {
-                                  validation();
-                                },
+                                onPressed: (() async {
+                                  if (_formKey.currentState!.validate()) {
+                                    try {
+                                      await _auth
+                                          .signInWithEmailAndPassword(
+                                            email: email.text,
+                                            password: password.text,
+                                          )
+                                          .then((uid) => {
+                                                showSnackBar(
+                                                  context,
+                                                  "Login Successful",
+                                                  kSuccessColor,
+                                                ),
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Login_SplashScreen(),
+                                                  ),
+                                                ),
+                                                setState(() {
+                                                  const CircularProgressIndicator(
+                                                    color: kSecondaryColor,
+                                                  );
+                                                }),
+                                              });
+                                    } on FirebaseAuthException catch (error) {
+                                      switch (error.code) {
+                                        case "invalid-email":
+                                          errorMessage =
+                                              "Wrong email address was entered, check email.";
+
+                                          break;
+                                        case "wrong-password":
+                                          errorMessage =
+                                              "Wrong password was entered, check password.";
+                                          break;
+                                        case "user-not-found":
+                                          errorMessage =
+                                              "The account with this email and password does not exist.";
+                                          break;
+                                        case "user-disabled":
+                                          errorMessage =
+                                              "The user with this email has been banned.";
+                                          break;
+                                        case "too-many-requests":
+                                          errorMessage = "Too many requests";
+                                          break;
+                                        case "operation-not-allowed":
+                                          errorMessage =
+                                              "Signing in with Email and Password is not enabled.";
+                                          break;
+                                        default:
+                                          errorMessage =
+                                              "Check your internet connection.";
+                                      }
+
+                                      showSnackBar(
+                                        context,
+                                        errorMessage!,
+                                        kErrorColor,
+                                      ); // D
+                                      (error.code);
+                                    }
+                                  }
+                                }),
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: kTextWhiteColor,
                                   backgroundColor: kPrimaryColor,

@@ -40,7 +40,7 @@ const Color kTextBlackColor = Color(
   0xFF000000,
 );
 const Color kTextGreyColor = Color(
-  0xFFA5A5A5,
+  0xFF868585,
 );
 const Color kBlueLinkTextColor = Color(
   0xFF2196F3,

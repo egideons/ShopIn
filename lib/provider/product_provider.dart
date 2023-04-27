@@ -24,10 +24,10 @@ class ProductProvider with ChangeNotifier {
     for (var element in userSnapShot.docs) {
       // if (currentUser!.uid == element.data()["UserId"]) {
       //   userModel = UserModel(
-      //       userAddress: element.data()["UserAddress"],
-      //       userImage: element.data()["UserImage"],
-      //       userEmail: element.data()["UserEmail"],
-      //       userGender: element.data()["UserGender"],
+      //       userAddress: element.data()["userAddress"],
+      //       userImage: element.data()["userImage"],
+      //       userEmail: element.data()["userEmail"],
+      //       userGender: element.data()["userGender"],
       //       userName: element.data()["UserName"],
       //       userPhoneNumber: element.data()["UserNumber"]);
       //   newList.add(userModel!);

@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<String> _uploadImage({File? image}) async {
     String url;
     Reference storageReference =
-        FirebaseStorage.instance.ref().child("UserImage/$userUid");
+        FirebaseStorage.instance.ref().child("userImage/$userUid");
     UploadTask uploadTask = storageReference.putFile(image!);
     TaskSnapshot snapshot = await uploadTask.whenComplete(() {
       url = storageReference.getDownloadURL() as String;
@@ -99,10 +99,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         : Container();
     FirebaseFirestore.instance.collection("User").doc(userUid).update({
       "UserName": userName.text,
-      "UserGender": isMale == true ? "Male" : "Female",
+      "userGender": isMale == true ? "Male" : "Female",
       "UserNumber": phoneNumber.text,
-      "UserImage": imageMap,
-      "UserAddress": address.text
+      "userImage": imageMap,
+      "userAddress": address.text
     });
     setState(() {
       centerCircle = false;
@@ -340,12 +340,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       for (var checkDocs in myDoc!) {
                         if (checkDocs.data()["UserId"] == userUid) {
                           userModel = UserModel(
-                            userEmail: checkDocs.data()["UserEmail"],
-                            userImage: checkDocs.data()["UserImage"],
-                            userAddress: checkDocs.data()["UserAddress"],
-                            userGender: checkDocs.data()["UserGender"],
-                            userName: checkDocs.data()["UserName"],
-                            userPhoneNumber: checkDocs.data()["UserNumber"],
+                            userId: checkDocs.data()[''],
+                            userEmail: checkDocs.data()["userEmail"],
+                            userImage: checkDocs.data()["userImage"],
+                            userAddress: checkDocs.data()["userAddress"],
+                            userGender: checkDocs.data()["userGender"],
+                            userName: checkDocs.data()["userName"],
+                            userPhoneNumber: checkDocs.data()["userNumber"],
+                            userPassword: checkDocs.data()["userPassword"],
                           );
                         }
                       }

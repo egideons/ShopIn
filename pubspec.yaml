@@ -27,11 +27,12 @@ dependencies:
   image_picker: ^0.8.7+4
   badges: ^3.1.1
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_spinkit: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
   android: true
@@ -53,6 +54,9 @@ flutter:
     - images/shopping.png
     - dev_assets/logo.png
     - dev_assets/logo_adaptive.png
+    - animations/login/login-successful-splash.gif
+    - animations/sign up/signup-successful-splash.gif
+    - animations/successful/successfully-green.gif
 
     # - images/a_dot_ham.jpeg
 

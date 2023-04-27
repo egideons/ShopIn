@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
-import 'package:shopin_app/screens/welcome/welcomescreen.dart';
+import 'package:shopin_app/splash%20screens/startup_splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,16 +33,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const HomePage();
-            } else {
-              return const WelcomeScreen();
-            }
-          },
-        ),
+        home: const Startup_SplashScreen(),
       ),
     );
   }
