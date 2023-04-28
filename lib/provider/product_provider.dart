@@ -121,10 +121,10 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> homeArchive = [];
 
-  Future<void> getHomeAchiveData() async {
+  Future<void> getHomeArchiveData() async {
     List<Product> newList = [];
     QuerySnapshot featureSnapShot =
-        await FirebaseFirestore.instance.collection("homeachive").get();
+        await FirebaseFirestore.instance.collection("homearchive").get();
     for (var element in featureSnapShot.docs) {
       // featureData = Product(
       //     image: element.data()["image"],
@@ -147,7 +147,7 @@ class ProductProvider with ChangeNotifier {
     QuerySnapshot archivesSnapShot = await FirebaseFirestore.instance
         .collection("products")
         .doc("hfPmMokn0tbAuGZvRMy1")
-        .collection("newachives")
+        .collection("newarchives")
         .get();
     for (var element in archivesSnapShot.docs) {
       // newArchivesData = Product(

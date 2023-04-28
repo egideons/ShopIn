@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopin_app/model/cartmodel.dart';
 import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/widgets/checkout_singleproduct.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 import 'package:shopin_app/widgets/notification_button.dart';
@@ -61,7 +62,7 @@ class _CheckOutState extends State<CheckOut> {
                     .map((c) => {
                           "ProductName": c.name,
                           "ProductPrice": c.price,
-                          "ProductQuetity": c.quantity,
+                          "ProductQuantity": c.quantity,
                           "ProductImage": c.image,
                           "Product Color": c.color,
                           "Product Size": c.size,
@@ -125,7 +126,7 @@ class _CheckOutState extends State<CheckOut> {
     Future<bool> _onWillPop() async {
       return (await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) => const HomePage(),
+          builder: (ctx) => HomePage(),
         ),
       ));
     }
@@ -138,19 +139,23 @@ class _CheckOutState extends State<CheckOut> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("CheckOut Page",
-              style: TextStyle(color: Colors.black)),
+          title: const Text(
+            "Checkout",
+            style: TextStyle(
+              color: kTextBlackColor,
+            ),
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: kBlackColor,
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
+                  builder: (ctx) => HomePage(),
                 ),
               );
             },
@@ -173,21 +178,19 @@ class _CheckOutState extends State<CheckOut> {
             children: <Widget>[
               Expanded(
                 flex: 2,
-                child: Container(
-                  child: ListView.builder(
-                    itemCount: myList!.length,
-                    itemBuilder: (ctx, myIndex) {
-                      return CheckOutSingleProduct(
-                        index: myIndex,
-                        color: myList![myIndex].color,
-                        size: myList![myIndex].size,
-                        image: myList![myIndex].image,
-                        name: myList![myIndex].name,
-                        price: myList![myIndex].price,
-                        quantity: myList![myIndex].quantity,
-                      );
-                    },
-                  ),
+                child: ListView.builder(
+                  itemCount: myList!.length,
+                  itemBuilder: (ctx, myIndex) {
+                    return CheckOutSingleProduct(
+                      index: myIndex,
+                      color: myList![myIndex].color,
+                      size: myList![myIndex].size,
+                      image: myList![myIndex].image,
+                      name: myList![myIndex].name,
+                      price: myList![myIndex].price,
+                      quantity: myList![myIndex].quantity,
+                    );
+                  },
                 ),
               ),
               Expanded(

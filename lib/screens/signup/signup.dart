@@ -63,6 +63,13 @@ class _SignUpState extends State<SignUp> {
 
     UserModel userModel = UserModel();
 
+    Navigator.pushAndRemoveUntil(
+      (context),
+      MaterialPageRoute(
+        builder: (context) => const Signup_SplashScreen(),
+      ),
+      (route) => false,
+    );
     // writing all the values
     userModel.userEmail = user!.email;
     userModel.userId = user.uid;
@@ -70,6 +77,7 @@ class _SignUpState extends State<SignUp> {
     userModel.userPhoneNumber = phoneNumberController.text;
     userModel.userPassword = passwordController.text;
     userModel.userAddress = addressController.text;
+    userModel.userGender = isMale == true ? "Male" : "Female";
 
     await firebaseFirestore
         .collection("users")
@@ -81,13 +89,6 @@ class _SignUpState extends State<SignUp> {
       "Your account has been successfully registered",
       kSuccessColor,
     );
-
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(
-          builder: (context) => const Signup_SplashScreen(),
-        ),
-        (route) => false);
   }
 
   @override
@@ -102,8 +103,6 @@ class _SignUpState extends State<SignUp> {
             const SignupPageFirstHalf(),
             kHalfSizedBox,
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(
@@ -113,7 +112,6 @@ class _SignUpState extends State<SignUp> {
                     kDefaultPadding * 3,
                   ),
                 ),
-                color: kSecondaryColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(
@@ -131,8 +129,8 @@ class _SignUpState extends State<SignUp> {
                           SignupCustomTextFormField(
                             controller: userNameController,
                             keyboadType: TextInputType.name,
-                            hintText: "Enter your first name",
-                            labelText: "First Name",
+                            hintText: "Enter your Username",
+                            labelText: "Username",
                             obscureText: false,
                             onSaved: (value) {
                               userNameController.text = value!;
@@ -331,69 +329,67 @@ class _SignUpState extends State<SignUp> {
                             height: 45,
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                (() async {
-                                  if (_formKey.currentState!.validate()) {
-                                    try {
-                                      await _auth
-                                          .createUserWithEmailAndPassword(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          )
-                                          .then(
-                                            (value) => {
-                                              setState(() {
-                                                const CircularProgressIndicator(
-                                                  color: kSecondaryColor,
-                                                );
-                                              }),
-                                              postUserDetailsToFirestore()
-                                            },
-                                          )
-                                          .catchError((e) {
-                                        showSnackBar(
-                                            context, e.message, kPrimaryColor);
-                                      });
-                                    } on FirebaseAuthException catch (error) {
-                                      switch (error.code) {
-                                        case "invalid-email":
-                                          errorMessage =
-                                              "Wrong email address was entered, check email.";
-
-                                          break;
-                                        case "wrong-password":
-                                          errorMessage =
-                                              "Wrong password was entered, check password.";
-                                          break;
-                                        case "user-not-found":
-                                          errorMessage =
-                                              "The account with this email and password does not exist.";
-                                          break;
-                                        case "user-disabled":
-                                          errorMessage =
-                                              "The user with this email has been banned.";
-                                          break;
-                                        case "too-many-requests":
-                                          errorMessage = "Too many requests";
-                                          break;
-                                        case "operation-not-allowed":
-                                          errorMessage =
-                                              "Signing in with Email and Password is not enabled.";
-                                          break;
-                                        default:
-                                          errorMessage =
-                                              "Check your internet connection.";
-                                      }
-
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    await _auth
+                                        .createUserWithEmailAndPassword(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        )
+                                        .then(
+                                          (value) => {
+                                            setState(() {
+                                              const CircularProgressIndicator(
+                                                color: kSecondaryColor,
+                                              );
+                                            }),
+                                            postUserDetailsToFirestore()
+                                          },
+                                        )
+                                        .catchError((e) {
                                       showSnackBar(
-                                        context,
-                                        errorMessage!,
-                                        kErrorColor,
-                                      ); // D
-                                      return (error.code);
+                                          context, e.message, kPrimaryColor);
+                                    });
+                                  } on FirebaseAuthException catch (error) {
+                                    switch (error.code) {
+                                      case "invalid-email":
+                                        errorMessage =
+                                            "Wrong email address was entered, check email.";
+
+                                        break;
+                                      case "wrong-password":
+                                        errorMessage =
+                                            "Wrong password was entered, check password.";
+                                        break;
+                                      case "user-not-found":
+                                        errorMessage =
+                                            "The account with this email and password does not exist.";
+                                        break;
+                                      case "user-disabled":
+                                        errorMessage =
+                                            "The user with this email has been banned.";
+                                        break;
+                                      case "too-many-requests":
+                                        errorMessage = "Too many requests";
+                                        break;
+                                      case "operation-not-allowed":
+                                        errorMessage =
+                                            "Signing in with Email and Password is not enabled.";
+                                        break;
+                                      default:
+                                        errorMessage =
+                                            "Check your internet connection.";
                                     }
+
+                                    showSnackBar(
+                                      context,
+                                      errorMessage!,
+                                      kErrorColor,
+                                    ); // D
+                                    (error.code);
                                   }
-                                });
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: kTextWhiteColor,

@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: const Color(0xff746bc9),
+          primaryColor: const Color(
+            0xff746bc9,
+          ),
           iconTheme: const IconThemeData(
             color: Colors.black,
           ),

@@ -4,17 +4,17 @@ import 'package:shopin_app/model/categoryicon.dart';
 import 'package:shopin_app/model/product.dart';
 
 class CategoryProvider with ChangeNotifier {
-  List<Product> shirt = [];
+  List<Product>? shirt;
   Product? shirtData;
-  List<Product> dress = [];
+  List<Product>? dress;
   Product? dressData;
-  List<Product> shoes = [];
+  List<Product>? shoes;
   Product? shoesData;
-  List<Product> pant = [];
+  List<Product>? pant;
   Product? pantData;
-  List<Product> tie = [];
+  List<Product>? tie;
   Product? tieData;
-  List<CategoryIcon> dressIcon = [];
+  List<CategoryIcon>? dressIcon;
   CategoryIcon? dressiconData;
 
   Future<void> getDressIconData() async {
@@ -32,7 +32,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<CategoryIcon> get getDressIcon {
+  List<CategoryIcon>? get getDressIcon {
     return dressIcon;
   }
 
@@ -138,7 +138,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getShirtList {
+  List<Product>? get getShirtList {
     return shirt;
   }
 
@@ -160,7 +160,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getDressList {
+  List<Product>? get getDressList {
     return dress;
   }
 
@@ -182,7 +182,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getshoesList {
+  List<Product>? get getshoesList {
     return shoes;
   }
 
@@ -204,7 +204,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getPantList {
+  List<Product>? get getPantList {
     return pant;
   }
 
@@ -226,7 +226,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getTieList {
+  List<Product>? get getTieList {
     return tie;
   }
 

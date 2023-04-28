@@ -124,13 +124,13 @@ class ListProduct extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
+                  builder: (ctx) => HomePage(),
                 ),
               );
             }),
         actions: <Widget>[
           _buildSearchBar(context),
-          NotificationButton(),
+          const NotificationButton(),
         ],
       ),
       body: Container(

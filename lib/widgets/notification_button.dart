@@ -23,7 +23,9 @@ class _NotificationButtonState extends State<NotificationButton> {
             ),
             actions: [
               TextButton(
-                child: const Text("Clear Notification"),
+                child: const Text(
+                  "Clear notification",
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() {
@@ -32,7 +34,9 @@ class _NotificationButtonState extends State<NotificationButton> {
                 },
               ),
               TextButton(
-                child: const Text("Okey"),
+                child: const Text(
+                  "Okay",
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -41,9 +45,11 @@ class _NotificationButtonState extends State<NotificationButton> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
-                  Text(productProvider!.notificationList.isNotEmpty
-                      ? "Your Product On Way"
-                      : "No Notification At Yet"),
+                  Text(
+                    productProvider!.notificationList.isNotEmpty
+                        ? "Your Products is on the Way"
+                        : "No notifications yet",
+                  ),
                 ],
               ),
             ),

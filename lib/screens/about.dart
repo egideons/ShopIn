@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/styles/colors.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
@@ -23,14 +24,17 @@ class About extends StatelessWidget {
           elevation: 0.0,
           backgroundColor: const Color(0xfff8f8f8),
           title: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back,
-              color: Color(0xff746bc9),
+              color: kPrimaryColor,
               size: 35,
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => HomePage()));
+                MaterialPageRoute(
+                  builder: (ctx) => HomePage(),
+                ),
+              );
             },
           ),
         ),
@@ -42,15 +46,17 @@ class About extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "About",
                 style: TextStyle(
                   fontSize: 40,
-                  color: Color(0xff746bc9),
+                  color: kPrimaryColor,
                 ),
               ),
               const Image(
-                image: AssetImage("images/about.png"),
+                image: AssetImage(
+                  "images/about.png",
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -61,7 +67,7 @@ class About extends StatelessWidget {
                 child: Wrap(
                   children: const [
                     Text(
-                      "Neru My Black Directionary,This App You Can Buy Dress Shirt Shoes Pant And Tie And Many Other Product In Cheap Price, Now Its Time Buy SomeThing",
+                      "ShopIn is an ecommerce mobile application",
                       style: TextStyle(fontSize: 22, color: Colors.grey),
                     ),
                   ],

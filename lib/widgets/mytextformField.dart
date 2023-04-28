@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shopin_app/styles/colors.dart';
 
 class MyTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String labelText;
-  final textInputType;
-  final textInputAction;
+  final TextInputType textInputType;
+  final TextInputAction textInputAction;
 
   const MyTextFormField({
     super.key,
@@ -25,6 +26,9 @@ class MyTextFormField extends StatelessWidget {
         border: const OutlineInputBorder(),
         hintText: hintText,
         labelText: labelText,
+        labelStyle: TextStyle(
+          color: kPrimaryColor,
+        )
       ),
     );
   }

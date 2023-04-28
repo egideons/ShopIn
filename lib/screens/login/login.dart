@@ -49,12 +49,6 @@ class _LoginState extends State<Login> {
     return GestureDetector(
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 32,
-          foregroundColor: kSecondaryColor,
-          backgroundColor: kPrimaryColor,
-          elevation: 0.0,
-        ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -73,7 +67,6 @@ class _LoginState extends State<Login> {
                     kDefaultPadding * 3,
                   ),
                 ),
-                color: kSecondaryColor,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(
@@ -115,6 +108,39 @@ class _LoginState extends State<Login> {
                                 ),
                                 textInputAction: TextInputAction.next,
                               ),
+                              const SizedBox(
+                                height: kDefaultPadding,
+                              ),
+                              LoginCustomTextFormField(
+                                formValidator: (value) {
+                                  RegExp passwordPattern = RegExp(
+                                    r'^.{8,}$',
+                                  );
+                                  if (value!.isEmpty) {
+                                    return "Enter your password";
+                                  } else if (!passwordPattern.hasMatch(value)) {
+                                    return "Password must be at least 8 characters";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  passwordController.text = value!;
+                                },
+                                controller: passwordController,
+                                hintText: "Enter your password",
+                                labelText: "Password",
+                                keyboadType: TextInputType.visiblePassword,
+                                obscureText: true,
+                                prefixIcon: Icon(
+                                  Icons.password_rounded,
+                                  color: kPrimaryColor,
+                                ),
+                                textInputAction: TextInputAction.done,
+                              ),
+                              const SizedBox(
+                                height: kDefaultPadding,
+                              ),
+                              const ForgotPasswordField(),
                               const SizedBox(
                                 height: kDefaultPadding,
                               ),
@@ -192,7 +218,7 @@ class _LoginState extends State<Login> {
                                     backgroundColor: kPrimaryColor,
                                   ),
                                   child: const Text(
-                                    "Register",
+                                    "Login",
                                   ),
                                 ),
                               ),

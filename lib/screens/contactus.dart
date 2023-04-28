@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shopin_app/model/usermodel.dart';
 import 'package:shopin_app/provider/product_provider.dart';
 import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/widgets/mybutton.dart';
 
 class ContactUs extends StatefulWidget {
@@ -20,7 +21,7 @@ class ContactUs extends StatefulWidget {
 class _ContactUsState extends State<ContactUs> {
   final TextEditingController message = TextEditingController();
 
-  String name = "", email = "";
+  String? name, email;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -52,8 +53,12 @@ class _ContactUsState extends State<ContactUs> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(
+          10,
+        ),
+        border: Border.all(
+          color: kGreyColor1,
+        ),
       ),
       padding: const EdgeInsets.only(left: 10),
       child: Column(
@@ -62,7 +67,10 @@ class _ContactUsState extends State<ContactUs> {
         children: [
           Text(
             name,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -71,15 +79,12 @@ class _ContactUsState extends State<ContactUs> {
 
   @override
   void initState() {
-    //Firebase User
-    UserModel loggedInUser = UserModel();
-
     ProductProvider provider;
     provider = Provider.of<ProductProvider>(context, listen: false);
     List<UserModel> user = provider.userModelList;
     user.map((e) {
-      name = loggedInUser.userName!;
-      email = loggedInUser.userEmail!;
+      name = name;
+      email = email;
 
       return Container();
     }).toList();
@@ -90,7 +95,7 @@ class _ContactUsState extends State<ContactUs> {
   Future<bool> _onWillPop() async {
     return (await Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (ctx) => const HomePage(),
+        builder: (ctx) => HomePage(),
       ),
     ));
   }
@@ -114,7 +119,7 @@ class _ContactUsState extends State<ContactUs> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
+                  builder: (ctx) => HomePage(),
                 ),
               );
             },
@@ -127,15 +132,19 @@ class _ContactUsState extends State<ContactUs> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text(
-                "Sent Us Your Message",
+              Text(
+                "Send us a message",
                 style: TextStyle(
-                  color: Color(0xff746bc9),
+                  color: kPrimaryColor,
                   fontSize: 28,
                 ),
               ),
-              _buildSingleFields(name: name),
-              _buildSingleFields(name: email),
+              _buildSingleFields(
+                name: name!,
+              ),
+              _buildSingleFields(
+                name: email!,
+              ),
               SizedBox(
                 height: 200,
                 child: TextFormField(

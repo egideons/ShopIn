@@ -16,7 +16,7 @@ class LoginPageFirstHalf extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(
-            "images/login/frame-1.png",
+            "images/login/frame-2.png",
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
           ),

@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:shopin_app/services/userAuthenticate.dart';
+import 'package:shopin_app/services/userSnapshot.dart';
+
 import 'package:shopin_app/styles/colors.dart';
 
 class Startup_SplashScreen extends StatelessWidget {
