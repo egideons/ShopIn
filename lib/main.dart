@@ -12,17 +12,25 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<CategoryProvider>(
-          create: (context) => CategoryProvider(),
+          create: (
+            context,
+          ) =>
+              CategoryProvider(),
         ),
         ChangeNotifierProvider<ProductProvider>(
-          create: (context) => ProductProvider(),
+          create: (
+            context,
+          ) =>
+              ProductProvider(),
         ),
       ],
       child: MaterialApp(

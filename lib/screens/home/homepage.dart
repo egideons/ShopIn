@@ -46,10 +46,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryProduct(String image) {
+  Widget _buildCategoryProduct(String image, int color) {
     return CircleAvatar(
-      maxRadius: 40,
-      backgroundColor: kPrimaryColor,
+      maxRadius: 35,
+      backgroundColor: Color(
+        color,
+      ),
       child: Image(
         color: kSecondaryColor,
         image: AssetImage(
@@ -111,11 +113,11 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 100,
+              height: 120,
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
                       hintText: "Search",
@@ -130,7 +132,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 60,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -169,12 +171,12 @@ class HomePage extends StatelessWidget {
                         _buildFeaturedProducts(
                           "Man Shirt",
                           30.0,
-                          "man.jpg",
+                          "man.png",
                         ),
                         _buildFeaturedProducts(
-                          "Female long T-shirt",
-                          30.0,
-                          "woman.jpg",
+                          "Smart watch",
+                          80.0,
+                          "watch.png",
                         ),
                       ],
                     )
@@ -210,22 +212,27 @@ class HomePage extends StatelessWidget {
                 children: [
                   _buildCategoryProduct(
                     "dress.png",
+                    0xff33dcfd,
+                  ),
+                  _buildCategoryProduct(
+                    "watch.png",
+                    0xff33dcfd,
                   ),
                   _buildCategoryProduct(
                     "dress.png",
+                    0xff33dcfd,
                   ),
                   _buildCategoryProduct(
                     "dress.png",
+                    0xff33dcfd,
                   ),
                   _buildCategoryProduct(
                     "dress.png",
-                  ),
-                  _buildCategoryProduct(
-                    "dress.png",
+                    0xff33dcfd,
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
