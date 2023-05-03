@@ -46,24 +46,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/about.png
-    - images/featured/camera.png
-    - images/featured/man.png
-    - images/featured/woman.png
-    - images/featured/watch.png
-    - images/category/dress.png
-    - images/category/watch.png
-    - images/userImage.png
-    - images/shopping.png
-    - dev_assets/logo.png
-    - dev_assets/logo_adaptive.png
-    - animations/login/login-successful-splash.gif
-    - animations/sign up/signup-successful-splash.gif
-    - animations/successful/successfully-green.gif
-    - images/login/frame-1.png
-    - images/login/frame-2.png
-    - images/signup/frame-1.png
-    - images/signup/frame-2.png
+    - dev_assets/
+    - images/
+    - images/featured/
+    - images/category/
+    - animations/login/
+    - animations/sign up/
+    - animations/successful/
+    - images/login/
+    - images/signup/
 
     # - images/a_dot_ham.jpeg
 

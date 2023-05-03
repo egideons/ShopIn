@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/splash%20screens/startup_splashscreen.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/styles/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,12 +39,12 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(
             0xff746bc9,
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.black,
+          iconTheme: IconThemeData(
+            color: kPrimaryColor,
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const Startup_SplashScreen(),
+        home: const HomePage(),
       ),
     );
   }
