@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   bool cartColor = false;
   bool aboutColor = false;
   bool contactUsColor = false;
+  Color drawerSelectedColor = kPrimaryColor;
 
   int _currentImage = 0;
 
@@ -97,6 +98,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
+              selectedColor: drawerSelectedColor,
               selected: homeColor,
               onTap: () {
                 setState(() {
@@ -114,6 +116,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
+              selectedColor: drawerSelectedColor,
+              selected: cartColor,
               onTap: () {
                 setState(() {
                   cartColor = true;
@@ -130,12 +134,14 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
+              selectedColor: drawerSelectedColor,
+              selected: aboutColor,
               onTap: () {
                 setState(() {
                   aboutColor = true;
-                  homeColor = homeColor;
-                  cartColor = cartColor;
-                  contactUsColor = contactUsColor;
+                  homeColor = false;
+                  cartColor = false;
+                  contactUsColor = false;
                 });
               },
               leading: const Icon(
@@ -146,6 +152,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
+              selectedColor: drawerSelectedColor,
+              selected: contactUsColor,
               onTap: () {
                 setState(() {
                   contactUsColor = true;

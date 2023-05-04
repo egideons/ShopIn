@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shopin_app/provider/category_provider.dart';
 import 'package:shopin_app/provider/product_provider.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/screens/detail%20screen/detailscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 
 void main() async {
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const HomePage(),
+        home: const DetailScreen(),
       ),
     );
   }
