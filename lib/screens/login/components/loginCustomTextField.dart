@@ -33,24 +33,30 @@ class LoginCustomTextFormField extends StatelessWidget {
       onSaved: onSaved,
       validator: formValidator,
       controller: controller,
+      style: const TextStyle(
+        color: kTextWhiteColor,
+      ),
       keyboardType: keyboadType,
       textInputAction: textInputAction,
       obscureText: obscureText,
       textAlign: TextAlign.start,
-      cursorColor: kPrimaryColor,
+      cursorColor: kTextWhiteColor,
       decoration: InputDecoration(
+        hintStyle: const TextStyle(
+          color: kTextWhiteColor,
+        ),
         prefixIcon: prefixIcon,
         labelText: labelText,
         hintText: hintText,
-        labelStyle: TextStyle(
-          color: kPrimaryColor,
+        labelStyle: const TextStyle(
+          color: kTextWhiteColor,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             20.0,
           ),
           borderSide: const BorderSide(
-            color: kBorderLightColor,
+            color: kSecondaryColor,
           ),
         ),
         enabledBorder: OutlineInputBorder(
@@ -58,15 +64,15 @@ class LoginCustomTextFormField extends StatelessWidget {
             20.0,
           ),
           borderSide: const BorderSide(
-            color: kBorderLightColor,
+            color: kSecondaryColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             20.0,
           ),
-          borderSide: BorderSide(
-            color: kPrimaryColor,
+          borderSide: const BorderSide(
+            color: kSecondaryColor,
             width: 1,
           ),
         ),

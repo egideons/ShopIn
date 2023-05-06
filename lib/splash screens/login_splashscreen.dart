@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:shopin_app/screens/home/homepage.dart';
 
 class Login_SplashScreen extends StatelessWidget {
   static String routeName = 'Login Splash Screen';
@@ -8,14 +9,12 @@ class Login_SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 6), () {
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => const HomePage(),
-      //   ),
-      // );
-      // Navigator.pushNamedAndRemoveUntil(
-      //     context, HomeWrapper.routeName, (route) => false);
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
     });
 
     return SafeArea(

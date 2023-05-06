@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopin_app/screens/detail%20screen/detailscreen.dart';
 import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
@@ -85,40 +86,119 @@ class ListProduct extends StatelessWidget {
                     crossAxisCount: 2,
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
-                    children: const [
-                      SingleProduct(
-                        name: "Man Shirt",
-                        price: 30.0,
-                        image: "man.png",
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "Man Shirt",
+                                price: 30.0,
+                                image: "man.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "Man Shirt",
+                          price: 30.0,
+                          image: "man.png",
+                        ),
                       ),
-                      SingleProduct(
-                        name: "Smart watch",
-                        price: 80.0,
-                        image: "smart-watch.png",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "Black Smart watch",
+                                price: 80.0,
+                                image: "smart-watch.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "Black Smart watch",
+                          price: 80.0,
+                          image: "smart-watch.png",
+                        ),
                       ),
-                      SingleProduct(
-                        name: "white t-shirt",
-                        price: 10.0,
-                        image: "product_0.png",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "white t-shirt",
+                                price: 10.0,
+                                image: "product_0.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "white t-shirt",
+                          price: 10.0,
+                          image: "product_0.png",
+                        ),
                       ),
-                      SingleProduct(
-                        name: "Blue t-shirt",
-                        price: 15.0,
-                        image: "product_1.png",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "Blue t-shirt",
+                                price: 15.0,
+                                image: "product_1.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "Blue t-shirt",
+                          price: 15.0,
+                          image: "product_1.png",
+                        ),
                       ),
-                      SingleProduct(
-                        name: "Designer t-shirt",
-                        price: 25.0,
-                        image: "product_2.png",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "Designer t-shirt",
+                                price: 25.0,
+                                image: "product_2.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "Designer t-shirt",
+                          price: 25.0,
+                          image: "product_2.png",
+                        ),
                       ),
-                      SingleProduct(
-                        name: "teal t-shirt",
-                        price: 15.0,
-                        image: "product_3.png",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const DetailScreen(
+                                name: "teal t-shirt",
+                                price: 15.0,
+                                image: "product_3.png",
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SingleProduct(
+                          name: "teal t-shirt",
+                          price: 15.0,
+                          image: "product_3.png",
+                        ),
                       ),
+                      kHalfSizedBox,
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ],

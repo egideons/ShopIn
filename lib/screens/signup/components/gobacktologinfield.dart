@@ -23,6 +23,7 @@ class GoBackToLoginField extends StatelessWidget {
                 text: "Already have an account? ",
                 style: TextStyle(
                   fontSize: 16,
+                  color: kTextWhiteColor,
                 ),
               ),
               TextSpan(
@@ -35,10 +36,10 @@ class GoBackToLoginField extends StatelessWidget {
                       ),
                     );
                   },
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: kPrimaryColor,
+                  fontSize: 18,
+                  color: kTextWhiteColor,
                 ),
               ),
             ],

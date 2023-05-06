@@ -12,7 +12,6 @@ class LoginPageFirstHalf extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2.3,
-      color: kPrimaryColor,
       child: Column(
         children: [
           Image.asset(
@@ -25,12 +24,12 @@ class LoginPageFirstHalf extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
+            children: <Widget>[
               Text(
                 "Welcome ",
                 style: TextStyle(
                   fontSize: 26,
-                  color: kTextWhiteColor,
+                  color: kPrimaryColor,
                   fontWeight: FontWeight.w300,
                 ),
               ),
@@ -39,7 +38,7 @@ class LoginPageFirstHalf extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w600,
-                  color: kTextWhiteColor,
+                  color: kPrimaryColor,
                 ),
               )
             ],
@@ -47,12 +46,12 @@ class LoginPageFirstHalf extends StatelessWidget {
           const SizedBox(
             height: kDefaultPadding / 6,
           ),
-          const Text(
+          Text(
             "Login to continue",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: kTextWhiteColor,
+              color: kPrimaryColor,
             ),
           )
         ],

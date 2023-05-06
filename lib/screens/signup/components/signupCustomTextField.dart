@@ -37,22 +37,28 @@ class SignupCustomTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       obscureText: obscureText,
       textAlign: TextAlign.start,
-      cursorColor: kPrimaryColor,
+      cursorColor: kSecondaryColor,
+      style: const TextStyle(
+        color: kTextWhiteColor,
+      ),
       decoration: InputDecoration(
         prefixIcon: Container(
           child: prefixIcon,
         ),
         labelText: labelText,
         hintText: hintText,
-        labelStyle: TextStyle(
-          color: kPrimaryColor,
+        hintStyle: const TextStyle(
+          color: kTextWhiteColor,
+        ),
+        labelStyle: const TextStyle(
+          color: kTextWhiteColor,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             20.0,
           ),
           borderSide: const BorderSide(
-            color: kBorderLightColor,
+            color: kSecondaryColor,
           ),
         ),
         enabledBorder: OutlineInputBorder(
@@ -60,15 +66,15 @@ class SignupCustomTextFormField extends StatelessWidget {
             20.0,
           ),
           borderSide: const BorderSide(
-            color: kBorderLightColor,
+            color: kSecondaryColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             20.0,
           ),
-          borderSide: BorderSide(
-            color: kPrimaryColor,
+          borderSide: const BorderSide(
+            color: kSecondaryColor,
             width: 1,
           ),
         ),

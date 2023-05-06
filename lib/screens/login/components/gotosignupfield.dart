@@ -23,6 +23,7 @@ class GoToSignUpField extends StatelessWidget {
                 text: "Don't have an account? ",
                 style: TextStyle(
                   fontSize: 16,
+                  color: kTextWhiteColor,
                 ),
               ),
               TextSpan(
@@ -35,10 +36,10 @@ class GoToSignUpField extends StatelessWidget {
                       ),
                     );
                   },
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: kPrimaryColor,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  color: kTextWhiteColor,
                 ),
               ),
             ],

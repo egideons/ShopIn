@@ -20,7 +20,7 @@ class ForgotPasswordField extends StatelessWidget {
         child: const Text(
           "Forgot Password?",
           style: TextStyle(
-            color: kTextGreyColor,
+            color: kTextWhiteColor,
             fontWeight: FontWeight.w500,
           ),
         ),

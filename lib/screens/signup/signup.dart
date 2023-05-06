@@ -1,13 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopin_app/model/usermodel.dart';
-import 'package:shopin_app/screens/signup/modules/firsthalf.dart';
-import 'package:shopin_app/screens/signup/modules/gobacktologinfield.dart';
-import 'package:shopin_app/screens/signup/modules/signupCustomTextField.dart';
+import 'package:shopin_app/screens/signup/components/firsthalf.dart';
+import 'package:shopin_app/screens/signup/components/gobacktologinfield.dart';
+import 'package:shopin_app/screens/signup/components/signupCustomTextField.dart';
 import 'package:shopin_app/splash%20screens/signup_splashscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
     showSnackBar(
       context,
       "Your account has been successfully registered",
-      kSuccessColor,
+      kSecondaryColor,
     );
   }
 
@@ -103,8 +103,9 @@ class _SignUpState extends State<SignUp> {
             const SignupPageFirstHalf(),
             kHalfSizedBox,
             Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(
                     kDefaultPadding * 3,
                   ),
@@ -146,9 +147,9 @@ class _SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.account_circle,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.next,
                           ),
@@ -173,9 +174,9 @@ class _SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.email,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.next,
                           ),
@@ -201,9 +202,9 @@ class _SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.phone_rounded,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.next,
                           ),
@@ -217,9 +218,9 @@ class _SignUpState extends State<SignUp> {
                             onSaved: (value) {
                               addressController.text = value!;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.house_sharp,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.next,
                             formValidator: (value) {
@@ -256,9 +257,9 @@ class _SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.password_rounded,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.next,
                           ),
@@ -281,9 +282,9 @@ class _SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.password_rounded,
-                              color: kPrimaryColor,
+                              color: kSecondaryColor,
                             ),
                             textInputAction: TextInputAction.done,
                           ),
@@ -299,25 +300,28 @@ class _SignUpState extends State<SignUp> {
                               padding: const EdgeInsets.only(left: 10),
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
+                                border: Border.all(
+                                  color: kSecondaryColor,
+                                ),
+                              ),
                               child: Center(
                                 child: Row(
                                   children: [
                                     Text(
                                       isMale == true ? "Male" : "Female",
                                       style: const TextStyle(
-                                        color: kTextGreyColor,
+                                        color: kTextWhiteColor,
                                         fontSize: 18,
                                       ),
                                     ),
                                     isMale == true
                                         ? const Icon(
                                             Icons.male,
-                                            color: kGreyColor1,
+                                            color: kSecondaryColor,
                                           )
                                         : const Icon(
                                             Icons.female,
-                                            color: kGreyColor1,
+                                            color: kSecondaryColor,
                                           ),
                                   ],
                                 ),
@@ -338,18 +342,12 @@ class _SignUpState extends State<SignUp> {
                                           password: passwordController.text,
                                         )
                                         .then(
-                                          (value) => {
-                                            setState(() {
-                                              const CircularProgressIndicator(
-                                                color: kSecondaryColor,
-                                              );
-                                            }),
-                                            postUserDetailsToFirestore()
-                                          },
+                                          (value) =>
+                                              {postUserDetailsToFirestore()},
                                         )
                                         .catchError((e) {
                                       showSnackBar(
-                                          context, e.message, kPrimaryColor);
+                                          context, e.message, kSecondaryColor);
                                     });
                                   } on FirebaseAuthException catch (error) {
                                     switch (error.code) {
@@ -392,8 +390,13 @@ class _SignUpState extends State<SignUp> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                foregroundColor: kTextWhiteColor,
-                                backgroundColor: kPrimaryColor,
+                                foregroundColor: kPrimaryColor,
+                                backgroundColor: kSecondaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                ),
                               ),
                               child: const Text(
                                 "Register",

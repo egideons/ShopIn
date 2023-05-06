@@ -2,10 +2,10 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/login/modules/firsthalf.dart';
-import 'package:shopin_app/screens/login/modules/forgotpasswordfield.dart';
-import 'package:shopin_app/screens/login/modules/gotosignupfield.dart';
-import 'package:shopin_app/screens/login/modules/loginCustomTextField.dart';
+import 'package:shopin_app/screens/login/components/firsthalf.dart';
+import 'package:shopin_app/screens/login/components/forgotpasswordfield.dart';
+import 'package:shopin_app/screens/login/components/gotosignupfield.dart';
+import 'package:shopin_app/screens/login/components/loginCustomTextField.dart';
 import 'package:shopin_app/splash%20screens/login_splashscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
@@ -58,8 +58,9 @@ class _LoginState extends State<Login> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(
                     kDefaultPadding * 3,
                   ),
@@ -102,9 +103,9 @@ class _LoginState extends State<Login> {
                                 labelText: "Email Address",
                                 keyboadType: TextInputType.emailAddress,
                                 obscureText: false,
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.email_rounded,
-                                  color: kPrimaryColor,
+                                  color: kSecondaryColor,
                                 ),
                                 textInputAction: TextInputAction.next,
                               ),
@@ -131,9 +132,9 @@ class _LoginState extends State<Login> {
                                 labelText: "Password",
                                 keyboadType: TextInputType.visiblePassword,
                                 obscureText: true,
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.password_rounded,
-                                  color: kPrimaryColor,
+                                  color: kSecondaryColor,
                                 ),
                                 textInputAction: TextInputAction.done,
                               ),
@@ -149,6 +150,11 @@ class _LoginState extends State<Login> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: (() async {
+                                    setState(() {
+                                      const CircularProgressIndicator(
+                                        color: kSecondaryColor,
+                                      );
+                                    });
                                     if (_formKey.currentState!.validate()) {
                                       try {
                                         await _auth
@@ -160,18 +166,15 @@ class _LoginState extends State<Login> {
                                                   showSnackBar(
                                                     context,
                                                     "Login Successful",
-                                                    kSuccessColor,
+                                                    kPrimaryColor,
                                                   ),
                                                   Navigator.of(context)
                                                       .pushReplacement(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const Login_SplashScreen())),
-                                                  setState(() {
-                                                    const CircularProgressIndicator(
-                                                      color: kSecondaryColor,
-                                                    );
-                                                  }),
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Login_SplashScreen(),
+                                                    ),
+                                                  ),
                                                 });
                                       } on FirebaseAuthException catch (error) {
                                         switch (error.code) {
@@ -214,8 +217,13 @@ class _LoginState extends State<Login> {
                                     }
                                   }),
                                   style: ElevatedButton.styleFrom(
-                                    foregroundColor: kTextWhiteColor,
-                                    backgroundColor: kPrimaryColor,
+                                    foregroundColor: kPrimaryColor,
+                                    backgroundColor: kSecondaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        10,
+                                      ),
+                                    ),
                                   ),
                                   child: const Text(
                                     "Login",
