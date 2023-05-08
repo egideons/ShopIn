@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shopin_app/model/cartmodel.dart';
-import 'package:shopin_app/model/product.dart';
-import 'package:shopin_app/model/usermodel.dart';
+import 'package:shopin_app/models/cartmodel.dart';
+import 'package:shopin_app/models/product.dart';
+import 'package:shopin_app/models/usermodel.dart';
 
 class ProductProvider with ChangeNotifier {
   List<Product> feature = [];

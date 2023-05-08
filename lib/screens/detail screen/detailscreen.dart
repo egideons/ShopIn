@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopin_app/screens/cart/cartscreen.dart';
 import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
@@ -304,8 +305,19 @@ class _DetailScreenState extends State<DetailScreen> {
           height: 60,
           width: MediaQuery.of(context).size.width,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => CartScreen(
+                    image: widget.image!,
+                    name: widget.name!,
+                    price: widget.price!,
+                  ),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
+              backgroundColor: kPrimaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
                   20,

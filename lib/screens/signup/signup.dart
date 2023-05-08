@@ -1,10 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/model/usermodel.dart';
 import 'package:shopin_app/screens/signup/components/firsthalf.dart';
 import 'package:shopin_app/screens/signup/components/gobacktologinfield.dart';
 import 'package:shopin_app/screens/signup/components/signupCustomTextField.dart';
@@ -47,49 +44,8 @@ bool isMale = true;
 bool isLoading = false;
 
 class _SignUpState extends State<SignUp> {
-  //Error Message
-  String? errorMessage;
-
   //Firebase Authentication
   final _auth = FirebaseAuth.instance;
-
-  postUserDetailsToFirestore() async {
-    // calling our firestore
-    // calling our user model
-    // sendiing these values
-
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
-
-    UserModel userModel = UserModel();
-
-    Navigator.pushAndRemoveUntil(
-      (context),
-      MaterialPageRoute(
-        builder: (context) => const Signup_SplashScreen(),
-      ),
-      (route) => false,
-    );
-    // writing all the values
-    userModel.userEmail = user!.email;
-    userModel.userId = user.uid;
-    userModel.userName = userNameController.text;
-    userModel.userPhoneNumber = phoneNumberController.text;
-    userModel.userPassword = passwordController.text;
-    userModel.userAddress = addressController.text;
-    userModel.userGender = isMale == true ? "Male" : "Female";
-
-    await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-
-    showSnackBar(
-      context,
-      "Your account has been successfully registered",
-      kSecondaryColor,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -335,58 +291,24 @@ class _SignUpState extends State<SignUp> {
                             child: ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  try {
-                                    await _auth
-                                        .createUserWithEmailAndPassword(
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                        )
-                                        .then(
-                                          (value) =>
-                                              {postUserDetailsToFirestore()},
-                                        )
-                                        .catchError((e) {
-                                      showSnackBar(
-                                          context, e.message, kSecondaryColor);
-                                    });
-                                  } on FirebaseAuthException catch (error) {
-                                    switch (error.code) {
-                                      case "invalid-email":
-                                        errorMessage =
-                                            "Wrong email address was entered, check email.";
-
-                                        break;
-                                      case "wrong-password":
-                                        errorMessage =
-                                            "Wrong password was entered, check password.";
-                                        break;
-                                      case "user-not-found":
-                                        errorMessage =
-                                            "The account with this email and password does not exist.";
-                                        break;
-                                      case "user-disabled":
-                                        errorMessage =
-                                            "The user with this email has been banned.";
-                                        break;
-                                      case "too-many-requests":
-                                        errorMessage = "Too many requests";
-                                        break;
-                                      case "operation-not-allowed":
-                                        errorMessage =
-                                            "Signing in with Email and Password is not enabled.";
-                                        break;
-                                      default:
-                                        errorMessage =
-                                            "Check your internet connection.";
-                                    }
-
-                                    showSnackBar(
+                                  await _auth.createUserWithEmailAndPassword(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                                  Navigator.pushAndRemoveUntil(
+                                    (context),
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Signup_SplashScreen(),
+                                    ),
+                                    (route) => false,
+                                  ).then(
+                                    (value) => showSnackBar(
                                       context,
-                                      errorMessage!,
-                                      kErrorColor,
-                                    ); // D
-                                    (error.code);
-                                  }
+                                      "Your account has been successfully registered",
+                                      kSecondaryColor,
+                                    ),
+                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(

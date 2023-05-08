@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/model/categoryicon.dart';
-import 'package:shopin_app/model/product.dart';
+import 'package:shopin_app/models/categoryicon.dart';
+import 'package:shopin_app/models/product.dart';
 
 class CategoryProvider with ChangeNotifier {
   List<Product>? shirt;

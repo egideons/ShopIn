@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopin_app/provider/product_provider.dart';
+import 'package:shopin_app/providers/product_provider.dart';
 
 class NotificationButton extends StatefulWidget {
   const NotificationButton({Key? key}) : super(key: key);
