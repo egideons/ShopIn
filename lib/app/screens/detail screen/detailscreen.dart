@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/cart/cartscreen.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 
+import '../cart/cartscreen.dart';
+import '../home/homepage.dart';
+
 class DetailScreen extends StatefulWidget {
-  final String? image;
-  final String? name;
-  final double? price;
+  final String image;
+  final String name;
+  final double price;
 
   const DetailScreen({
     super.key,
-    @required this.image,
-    @required this.name,
-    @required this.price,
+    required this.image,
+    required this.name,
+    required this.price,
   });
 
   @override
@@ -133,7 +134,7 @@ class _DetailScreenState extends State<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.name!,
+                widget.name,
                 style: myFontStyle,
               ),
               kHalfSizedBox,
@@ -298,7 +299,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildCheckoutButton() {
+  Widget _buildCartButton() {
     return Column(
       children: <Widget>[
         SizedBox(
@@ -309,9 +310,9 @@ class _DetailScreenState extends State<DetailScreen> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (ctx) => CartScreen(
-                    image: widget.image!,
-                    name: widget.name!,
-                    price: widget.price!,
+                    image: widget.image,
+                    name: widget.name,
+                    price: widget.price,
                   ),
                 ),
               );
@@ -325,7 +326,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
             child: Text(
-              "Checkout",
+              "Go to Cart",
               style: myFontStyle,
             ),
           ),
@@ -351,7 +352,7 @@ class _DetailScreenState extends State<DetailScreen> {
           kHalfSizedBox,
           _buildQuantityPart(),
           kSizedBox,
-          _buildCheckoutButton(),
+          _buildCartButton(),
         ],
       ),
     );

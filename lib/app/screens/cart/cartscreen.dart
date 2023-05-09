@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/detail%20screen/detailscreen.dart';
+import 'package:shopin_app/app/screens/checkout/checkout.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 
@@ -26,6 +26,45 @@ class _CartScreenState extends State<CartScreen> {
   );
 
 // ============== WIDGETS SECTION =============== //
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: kTransparentColor,
+      centerTitle: true,
+      elevation: 0.0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.shopping_cart,
+            color: kPrimaryColor,
+          ),
+          const Text(
+            "Cart",
+            style: TextStyle(
+              color: kTextBlackColor,
+            ),
+          ),
+        ],
+      ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back,
+          color: kBlackColor,
+        ),
+        onPressed: () {},
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.notifications_none,
+            color: kBlackColor,
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildCartSection() {
     return SizedBox(
@@ -60,8 +99,9 @@ class _CartScreenState extends State<CartScreen> {
                         Text(
                           widget.name,
                         ),
-                        const Text(
+                        Text(
                           "Shirts",
+                          style: myFontStyle,
                         ),
                         Text(
                           "\$ ${widget.price.toString()}",
@@ -121,45 +161,58 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  Widget _buildBottomNavigationBar({String? name}) {
+    return Container(
+      height: 60,
+      width: 100,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
+      padding: const EdgeInsets.only(
+        bottom: 10,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => CheckOut(
+                name: widget.name,
+                image: widget.image,
+                price: widget.price,
+              ),
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kPrimaryColor,
+        ),
+        child: Text(
+          name!,
+          style: myFontStyle,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(),
-      appBar: AppBar(
-        backgroundColor: kTransparentColor,
-        centerTitle: true,
-        elevation: 0.0,
-        title: const Text(
-          "Cart",
-          style: TextStyle(
-            color: kTextBlackColor,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: kBlackColor,
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (ctx) => const DetailScreen(),
-              ),
-            );
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_none,
-              color: kBlackColor,
-            ),
-          ),
-        ],
-      ),
-      body: Column(
+      appBar: _buildAppBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+      body: ListView(
         children: <Widget>[
+          _buildCartSection(),
+          kHalfSizedBox,
+          _buildCartSection(),
+          kHalfSizedBox,
+          _buildCartSection(),
+          kHalfSizedBox,
+          _buildCartSection(),
+          kHalfSizedBox,
+          _buildCartSection(),
+          kHalfSizedBox,
+          _buildCartSection(),
+          kHalfSizedBox,
           _buildCartSection(),
           kHalfSizedBox,
           _buildCartSection(),

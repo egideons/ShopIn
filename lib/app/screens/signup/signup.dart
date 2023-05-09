@@ -2,10 +2,10 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/signup/components/firsthalf.dart';
-import 'package:shopin_app/screens/signup/components/gobacktologinfield.dart';
-import 'package:shopin_app/screens/signup/components/signupCustomTextField.dart';
-import 'package:shopin_app/splash%20screens/signup_splashscreen.dart';
+import 'package:shopin_app/app/screens/signup/components/firsthalf.dart';
+import 'package:shopin_app/app/screens/signup/components/gobacktologinfield.dart';
+import 'package:shopin_app/app/screens/signup/components/signupCustomTextField.dart';
+import 'package:shopin_app/app/splash%20screens/signup_splashscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 import 'package:shopin_app/utils/showSnackBar.dart';

@@ -2,8 +2,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
-import 'package:shopin_app/screens/welcome/welcomescreen.dart';
+import 'package:shopin_app/app/screens/home/homepage.dart';
+import 'package:shopin_app/app/screens/welcome/welcomescreen.dart';
 
 class UserSnapshot extends StatelessWidget {
   static String routeName = "User Snapshot";

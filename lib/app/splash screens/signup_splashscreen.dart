@@ -1,15 +1,15 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/home/homepage.dart';
+import 'package:shopin_app/app/screens/home/homepage.dart';
 
-class Login_SplashScreen extends StatelessWidget {
-  static String routeName = 'Login Splash Screen';
-  const Login_SplashScreen({super.key});
+class Signup_SplashScreen extends StatelessWidget {
+  static String routeName = 'Signup Splash Screen';
+  const Signup_SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomePage(),
@@ -32,7 +32,7 @@ class Login_SplashScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                      "animations/login/login-successful-splash.gif",
+                      "animations/sign up/signup-successful-splash.gif",
                     ),
                   ),
                   shape: BoxShape.circle,

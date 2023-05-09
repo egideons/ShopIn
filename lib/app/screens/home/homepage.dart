@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopin_app/screens/detail%20screen/detailscreen.dart';
-import 'package:shopin_app/screens/list%20products/listproduct.dart';
-import 'package:shopin_app/screens/login/login.dart';
+import 'package:shopin_app/app/screens/detail%20screen/detailscreen.dart';
+import 'package:shopin_app/app/screens/list%20products/listproduct.dart';
+import 'package:shopin_app/app/screens/login/login.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 import 'package:shopin_app/utils/showSnackBar.dart';
@@ -60,11 +60,10 @@ class _HomePageState extends State<HomePage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: const Text(
-        "Home",
-        style: TextStyle(
-          color: kTextBlackColor,
-        ),
+      title: Icon(
+        Icons.home,
+        color: kPrimaryColor,
+        size: 30,
       ),
       centerTitle: true,
       elevation: 0.0,
