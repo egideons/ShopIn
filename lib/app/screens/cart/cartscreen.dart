@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopin_app/app/screens/checkout/checkout.dart';
+import 'package:shopin_app/app/screens/detail%20screen/detailscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
-import 'package:shopin_app/styles/constants.dart';
 
 class CartScreen extends StatefulWidget {
   final double price;
@@ -32,27 +32,26 @@ class _CartScreenState extends State<CartScreen> {
       backgroundColor: kTransparentColor,
       centerTitle: true,
       elevation: 0.0,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.shopping_cart,
-            color: kPrimaryColor,
-          ),
-          const Text(
-            "Cart",
-            style: TextStyle(
-              color: kTextBlackColor,
-            ),
-          ),
-        ],
+      title: Icon(
+        Icons.shopping_cart,
+        color: kPrimaryColor,
       ),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back,
           color: kBlackColor,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => DetailScreen(
+                name: widget.name,
+                image: widget.image,
+                price: widget.price,
+              ),
+            ),
+          );
+        },
       ),
       actions: [
         IconButton(
@@ -81,7 +80,6 @@ class _CartScreenState extends State<CartScreen> {
                   width: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      fit: BoxFit.fill,
                       image: AssetImage(
                         "images/featured/${widget.image}",
                       ),
@@ -161,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar({String? name}) {
+  Widget _buildBottomNavigationBar(String name) {
     return Container(
       height: 60,
       width: 100,
@@ -187,7 +185,7 @@ class _CartScreenState extends State<CartScreen> {
           backgroundColor: kPrimaryColor,
         ),
         child: Text(
-          name!,
+          name,
           style: myFontStyle,
         ),
       ),
@@ -196,29 +194,17 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-      body: ListView(
-        children: <Widget>[
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-          kHalfSizedBox,
-          _buildCartSection(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        bottomNavigationBar: _buildBottomNavigationBar(
+          "Checkout",
+        ),
+        body: ListView(
+          children: <Widget>[
+            _buildCartSection(),
+          ],
+        ),
       ),
     );
   }

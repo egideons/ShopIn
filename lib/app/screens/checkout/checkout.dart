@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopin_app/app/screens/cart/cartscreen.dart';
 import 'package:shopin_app/styles/colors.dart';
 
 class CheckOut extends StatefulWidget {
@@ -30,27 +31,26 @@ class _CheckOutState extends State<CheckOut> {
       backgroundColor: kTransparentColor,
       centerTitle: true,
       elevation: 0.0,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.shopping_cart_checkout,
-            color: kPrimaryColor,
-          ),
-          const Text(
-            "Checkout",
-            style: TextStyle(
-              color: kTextBlackColor,
-            ),
-          ),
-        ],
+      title: Icon(
+        Icons.shopping_cart_checkout,
+        color: kPrimaryColor,
       ),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back,
           color: kBlackColor,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => CartScreen(
+                name: widget.name,
+                image: widget.image,
+                price: widget.price,
+              ),
+            ),
+          );
+        },
       ),
       actions: [
         IconButton(
@@ -79,7 +79,6 @@ class _CheckOutState extends State<CheckOut> {
                   width: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      fit: BoxFit.fill,
                       image: AssetImage(
                         "images/featured/${widget.image}",
                       ),
@@ -181,46 +180,51 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      bottomNavigationBar: _buildBottomNavigationBar(
-        name: "Buy",
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
+    return SafeArea(
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        bottomNavigationBar: _buildBottomNavigationBar(
+          name: "Buy",
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildSingleCartSection(),
-            _buildSingleCartSection(),
-            SizedBox(
-              height: 150,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  _buildBottomDetailSection(
-                    startName: "Your Price: ",
-                    endName: "\$ 60.00",
-                  ),
-                  _buildBottomDetailSection(
-                    startName: "Discount: ",
-                    endName: "3%",
-                  ),
-                  _buildBottomDetailSection(
-                    startName: "Shipping: ",
-                    endName: "\$ 12.00",
-                  ),
-                  _buildBottomDetailSection(
-                    startName: "Total Price: ",
-                    endName: "\$ 50.40",
-                  ),
-                ],
-              ),
-            )
-          ],
+        body: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 15,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildSingleCartSection(),
+              SizedBox(
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    _buildBottomDetailSection(
+                      startName: "Product Price: ",
+                      endName: "\$ ${widget.price}",
+                    ),
+                    _buildBottomDetailSection(
+                      startName: "Quantity: ",
+                      endName: "1",
+                    ),
+                    _buildBottomDetailSection(
+                      startName: "Discount: ",
+                      endName: "3%",
+                    ),
+                    _buildBottomDetailSection(
+                      startName: "Shipping: ",
+                      endName: "\$ 12.00",
+                    ),
+                    _buildBottomDetailSection(
+                      startName: "Total Price: ",
+                      endName: "\$ 50.40",
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

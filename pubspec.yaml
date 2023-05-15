@@ -20,6 +20,7 @@ dependencies:
   firebase_analytics: ^10.2.1
   cloud_functions: ^4.1.1
   snackbar: ^1.0.2
+  carousel_pro: ^1.0.0
   carousel_slider: ^4.2.1
   provider: ^6.0.5
   flutter_material_pickers: ^3.3.0
@@ -37,9 +38,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "appicon/icon.png"
+  image_path: "dev_assets/logo.png"
   adaptive_icon_background: "#f8f8f8"
-  adaptive_icon_foreground: "appicon/icon.png"
+  adaptive_icon_foreground: "dev_assets/logo_adaptive.png"
 
 flutter:
   uses-material-design: true
@@ -47,10 +48,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - dev_assets/
-    - appicon/
+    - icons/
     - images/
     - images/featured/
     - images/category/
+    - animations/loading/  
     - animations/login/
     - animations/sign up/
     - animations/successful/

@@ -37,9 +37,9 @@ class _DetailScreenState extends State<DetailScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       centerTitle: true,
-      title: const Text(
-        "Product Detail",
-        style: TextStyle(
+      title: Text(
+        widget.name,
+        style: const TextStyle(
           color: kTextBlackColor,
         ),
       ),
@@ -326,7 +326,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
             child: Text(
-              "Go to Cart",
+              "Add to Cart",
               style: myFontStyle,
             ),
           ),
@@ -362,16 +362,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Container(
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          physics: const BouncingScrollPhysics(),
-          children: <Widget>[
-            _buildImage(),
-            _buildContent(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: Container(
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            physics: const BouncingScrollPhysics(),
+            children: <Widget>[
+              _buildImage(),
+              _buildContent(),
+            ],
+          ),
         ),
       ),
     );

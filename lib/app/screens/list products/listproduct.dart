@@ -99,7 +99,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "Man Shirt",
                           price: 30.0,
                           image: "man.png",
@@ -117,7 +117,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "Black Smart watch",
                           price: 80.0,
                           image: "smart-watch.png",
@@ -135,7 +135,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "white t-shirt",
                           price: 10.0,
                           image: "product_0.png",
@@ -153,7 +153,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "Blue t-shirt",
                           price: 15.0,
                           image: "product_1.png",
@@ -171,7 +171,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "Designer t-shirt",
                           price: 25.0,
                           image: "product_2.png",
@@ -189,7 +189,7 @@ class ListProduct extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const SingleProduct(
+                        child: SingleProduct(
                           name: "teal t-shirt",
                           price: 15.0,
                           image: "product_3.png",

@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shopin_app/app/screens/detail%20screen/detailscreen.dart';
 import 'package:shopin_app/app/screens/list%20products/listproduct.dart';
 import 'package:shopin_app/app/screens/login/login.dart';
+import 'package:shopin_app/models/product.dart';
 import 'package:shopin_app/styles/colors.dart';
 import 'package:shopin_app/styles/constants.dart';
 import 'package:shopin_app/utils/showSnackBar.dart';
@@ -15,6 +18,11 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
+// Product? mobileData, menData, shoeData, smartWatchData, womenData, cameraData;
+
+Product menData = Product();
+Product womenData = Product();
 
 class _HomePageState extends State<HomePage> {
 //====================== VARIABLES SECTION ========================//
@@ -28,8 +36,13 @@ class _HomePageState extends State<HomePage> {
   //Firebase Authentication
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  int _currentImage = 0;
+  //Firebase Firestore
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+
+  //Global Key
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  int _currentImage = 0;
 
 //===================== CAROUSEL SECTION =======================//
 //Carousel Images
@@ -116,6 +129,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMyDrawer() {
     return Drawer(
+      elevation: 10.0,
+      shadowColor: kGreyColor2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          10,
+        ),
+      ),
       child: ListView(
         children: <Widget>[
           const UserAccountsDrawerHeader(
@@ -147,6 +167,11 @@ class _HomePageState extends State<HomePage> {
             selectedColor: drawerSelectedColor,
             selected: homeColor,
             onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              );
               setState(() {
                 homeColor = true;
                 aboutColor = false;
@@ -214,6 +239,10 @@ class _HomePageState extends State<HomePage> {
             title: const Text(
               "Contact us",
             ),
+          ),
+          const Divider(
+            thickness: 1,
+            color: kGreyColor1,
           ),
           ListTile(
             onTap: () async {
@@ -361,36 +390,36 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const DetailScreen(
-                      image: "man.png",
-                      name: "Man Shirt",
-                      price: 30.0,
+                    builder: (context) => DetailScreen(
+                      name: menData.name!,
+                      image: menData.image!,
+                      price: menData.price!,
                     ),
                   ),
                 );
               },
-              child: const SingleProduct(
-                name: "Man Shirt",
-                price: 30.0,
-                image: "man.png",
+              child: SingleProduct(
+                name: menData.name!,
+                image: menData.image!,
+                price: menData.price!,
               ),
             ),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const DetailScreen(
-                      image: "smart-watch.png",
-                      name: "Black Smart Watch",
-                      price: 80.0,
+                    builder: (context) => DetailScreen(
+                      name: womenData.name!,
+                      image: womenData.image!,
+                      price: womenData.price!,
                     ),
                   ),
                 );
               },
-              child: const SingleProduct(
-                name: "Black Smart watch",
-                price: 80.0,
-                image: "smart-watch.png",
+              child: SingleProduct(
+                name: womenData.name!,
+                image: womenData.image!,
+                price: womenData.price!,
               ),
             ),
           ],
@@ -478,9 +507,9 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: const SingleProduct(
-                        name: "Crystal gold watch",
-                        price: 45.0,
                         image: "female-gold-watch.png",
+                        price: 45.0,
+                        name: "Crystal gold watch",
                       ),
                     ),
                   ],
@@ -495,39 +524,87 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _key,
-      drawer: _buildMyDrawer(),
-      appBar: _buildAppBar(),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          children: [
-            SizedBox(
+    return SafeArea(
+      child: Scaffold(
+        key: _key,
+        drawer: _buildMyDrawer(),
+        appBar: _buildAppBar(),
+        body: FutureBuilder(
+          future: _firebaseFirestore
+              .collection(
+                "products",
+              )
+              .doc(
+                "Xp7cKFEwpyeJ3h3LxZlG",
+              )
+              .collection(
+                "featuredProducts",
+              )
+              .get(),
+          builder: (context, snapshot) {
+            menData = Product(
+              image: snapshot.data?.docs[0]["image"].toString(),
+              name: snapshot.data?.docs[0]["name"].toString(),
+              price: snapshot.data?.docs[0]["price"].toDouble(),
+            );
+            womenData = Product(
+              image: snapshot.data?.docs[1]["image"],
+              name: snapshot.data?.docs[1]["name"].toString(),
+              price: snapshot.data?.docs[1]["price"].toDouble(),
+            );
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SpinKitFoldingCube(
+                      color: kPrimaryColor,
+                    ),
+                    kSizedBox,
+                    const Text(
+                      "...wait a moment",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return Container(
+              height: double.infinity,
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _buildCarouselSlider(),
-                      _buildCategory(),
-                      kSizedBox,
-                      _buildFeatured(),
-                      _buildArchives(),
-                    ],
+              margin: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildCarouselSlider(),
+                            _buildCategory(),
+                            kSizedBox,
+                            _buildFeatured(),
+                            _buildArchives(),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

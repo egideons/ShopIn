@@ -17,44 +17,42 @@ class SingleProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: SizedBox(
-        height: 250,
-        width: 160,
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-              ),
-              child: Container(
-                height: 190,
-                width: 160,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage(
-                      "images/featured/$image",
+          height: 300,
+          width: MediaQuery.of(context).size.width / 2.35,
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                child: Container(
+                  height: 190,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        image,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Text(
-              "\$ ${price.toString()}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-                color: kPrimaryColor,
+              Text(
+                "\$ ${price.toString()}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: kPrimaryColor,
+                ),
               ),
-            ),
-            Text(
-              name,
-              style: const TextStyle(
-                fontSize: 17,
+              Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          )),
     );
   }
 }
