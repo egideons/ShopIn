@@ -2,9 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shopin_app/app/screens/detail%20screen/detailscreen.dart';
-import 'package:shopin_app/app/screens/list%20products/listproduct.dart';
+import 'package:shopin_app/app/screens/list%20product/listproduct.dart';
 import 'package:shopin_app/app/screens/login/login.dart';
 import 'package:shopin_app/models/product.dart';
 import 'package:shopin_app/styles/colors.dart';
@@ -19,10 +18,15 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// Product? mobileData, menData, shoeData, smartWatchData, womenData, cameraData;
-
+//Featured Products
 Product menData = Product();
 Product womenData = Product();
+var featuredSnapShot;
+
+//New Archives
+Product headPhonesData = Product();
+Product cameraData = Product();
+var newArchivesSnapShot;
 
 class _HomePageState extends State<HomePage> {
 //====================== VARIABLES SECTION ========================//
@@ -42,9 +46,9 @@ class _HomePageState extends State<HomePage> {
   //Global Key
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+//===================== CAROUSEL SECTION =======================//
   int _currentImage = 0;
 
-//===================== CAROUSEL SECTION =======================//
 //Carousel Images
   final List<String> carouselImages = [
     "images/featured/product_0.png",
@@ -368,8 +372,9 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const ListProduct(
+                    builder: (context) => ListProduct(
                       name: "Featured",
+                      snapShot: featuredSnapShot,
                     ),
                   ),
                 );
@@ -450,8 +455,9 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => const ListProduct(
+                          builder: (context) => ListProduct(
                             name: "New Archives",
+                            snapShot: newArchivesSnapShot,
                           ),
                         ),
                       );
@@ -480,36 +486,36 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const DetailScreen(
-                              name: "Long black gown",
-                              price: 200.0,
-                              image: "long-black-gown.png",
+                            builder: (context) => DetailScreen(
+                              image: headPhonesData.image!,
+                              name: headPhonesData.name!,
+                              price: headPhonesData.price!,
                             ),
                           ),
                         );
                       },
-                      child: const SingleProduct(
-                        name: "Long black gown",
-                        price: 120.0,
-                        image: "long-black-gown.png",
+                      child: SingleProduct(
+                        image: headPhonesData.image!,
+                        name: headPhonesData.name!,
+                        price: headPhonesData.price!,
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const DetailScreen(
-                              name: "Crystal gold watch",
-                              price: 45.0,
-                              image: "female-gold-watch.png",
+                            builder: (context) => DetailScreen(
+                              name: cameraData.name!,
+                              image: cameraData.image!,
+                              price: cameraData.price!,
                             ),
                           ),
                         );
                       },
-                      child: const SingleProduct(
-                        image: "female-gold-watch.png",
-                        price: 45.0,
-                        name: "Crystal gold watch",
+                      child: SingleProduct(
+                        name: cameraData.name!,
+                        image: cameraData.image!,
+                        price: cameraData.price!,
                       ),
                     ),
                   ],
@@ -542,23 +548,12 @@ class _HomePageState extends State<HomePage> {
               )
               .get(),
           builder: (context, snapshot) {
-            menData = Product(
-              image: snapshot.data?.docs[0]["image"].toString(),
-              name: snapshot.data?.docs[0]["name"].toString(),
-              price: snapshot.data?.docs[0]["price"].toDouble(),
-            );
-            womenData = Product(
-              image: snapshot.data?.docs[1]["image"],
-              name: snapshot.data?.docs[1]["name"].toString(),
-              price: snapshot.data?.docs[1]["price"].toDouble(),
-            );
-
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SpinKitFoldingCube(
+                    CircularProgressIndicator(
                       color: kPrimaryColor,
                     ),
                     kSizedBox,
@@ -572,38 +567,95 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
+            featuredSnapShot = snapshot;
+            menData = Product(
+              image: snapshot.data?.docs[0]["image"].toString(),
+              name: snapshot.data?.docs[0]["name"].toString(),
+              price: snapshot.data?.docs[0]["price"].toDouble(),
+            );
+            womenData = Product(
+              image: snapshot.data?.docs[1]["image"].toString(),
+              name: snapshot.data?.docs[1]["name"].toString(),
+              price: snapshot.data?.docs[1]["price"].toDouble(),
+            );
 
-            return Container(
-              height: double.infinity,
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                children: [
-                  SizedBox(
+            return FutureBuilder(
+                future: _firebaseFirestore
+                    .collection(
+                      "products",
+                    )
+                    .doc(
+                      "Xp7cKFEwpyeJ3h3LxZlG",
+                    )
+                    .collection(
+                      "newArchives",
+                    )
+                    .get(),
+                builder: (context, snapShot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            color: kPrimaryColor,
+                          ),
+                          kSizedBox,
+                          const Text(
+                            "...wait a moment",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  newArchivesSnapShot = snapShot;
+                  headPhonesData = Product(
+                    image: snapShot.data?.docs[0]["image"].toString(),
+                    name: snapShot.data?.docs[0]["name"].toString(),
+                    price: snapShot.data?.docs[0]["price"].toDouble(),
+                  );
+                  cameraData = Product(
+                    image: snapShot.data?.docs[1]["image"].toString(),
+                    name: snapShot.data?.docs[1]["name"].toString(),
+                    price: snapShot.data?.docs[1]["price"].toDouble(),
+                  );
+
+                  return Container(
+                    height: double.infinity,
                     width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            _buildCarouselSlider(),
-                            _buildCategory(),
-                            kSizedBox,
-                            _buildFeatured(),
-                            _buildArchives(),
-                          ],
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: ListView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // _buildCarouselSlider(),
+                                  _buildCategory(),
+                                  kSizedBox,
+                                  _buildFeatured(),
+                                  _buildArchives(),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
+                  );
+                });
           },
         ),
       ),
