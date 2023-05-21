@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shopin_app/app/screens/home/homepage.dart';
+import 'package:shopin_app/provider/category%20provider.dart';
+import 'package:shopin_app/provider/product%20provider.dart';
 import 'package:shopin_app/styles/colors.dart';
 
 void main() async {
@@ -35,7 +38,17 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: MultiProvider(
+        providers: [
+          Provider<ProductProvider>(
+            create: (ctx) => ProductProvider(),
+          ),
+          Provider<CategoryProvider>(
+            create: (ctx) => CategoryProvider(),
+          ),
+        ],
+        child: const HomePage(),
+      ),
     );
   }
 }

@@ -22,6 +22,7 @@ class _CheckOutState extends State<CheckOut> {
   int count = 1;
   TextStyle myFontStyle = const TextStyle(
     fontSize: 18,
+    fontWeight: FontWeight.bold,
   );
 
 // ============== WIDGETS SECTION =============== //
@@ -79,8 +80,8 @@ class _CheckOutState extends State<CheckOut> {
                   width: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        "images/featured/${widget.image}",
+                      image: NetworkImage(
+                        widget.image,
                       ),
                     ),
                   ),
@@ -101,7 +102,7 @@ class _CheckOutState extends State<CheckOut> {
                           style: myFontStyle,
                         ),
                         Text(
-                          "\$ ${widget.price.toString()}",
+                          widget.price.toString(),
                           style: const TextStyle(
                             color: Color(
                               0xff9b96d6,

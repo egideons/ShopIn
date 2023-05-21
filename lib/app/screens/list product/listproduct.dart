@@ -55,6 +55,8 @@ class ListProduct extends StatelessWidget {
           horizontal: 20,
         ),
         child: ListView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           children: [
             Column(
               children: <Widget>[
@@ -68,6 +70,7 @@ class ListProduct extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             name!,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,

@@ -113,8 +113,8 @@ class _DetailScreenState extends State<DetailScreen> {
               height: 220,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                    "images/featured/${widget.image}",
+                  image: NetworkImage(
+                    widget.image,
                   ),
                 ),
               ),

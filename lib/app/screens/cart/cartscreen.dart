@@ -23,6 +23,7 @@ class _CartScreenState extends State<CartScreen> {
   int count = 1;
   TextStyle myFontStyle = const TextStyle(
     fontSize: 18,
+    fontWeight: FontWeight.bold,
   );
 
 // ============== WIDGETS SECTION =============== //
@@ -80,8 +81,8 @@ class _CartScreenState extends State<CartScreen> {
                   width: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        "images/featured/${widget.image}",
+                      image: NetworkImage(
+                        widget.image,
                       ),
                     ),
                   ),
@@ -102,7 +103,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: myFontStyle,
                         ),
                         Text(
-                          "\$ ${widget.price.toString()}",
+                          widget.price.toString(),
                           style: const TextStyle(
                             color: Color(
                               0xff9b96d6,

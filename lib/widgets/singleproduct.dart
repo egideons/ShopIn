@@ -38,7 +38,7 @@ class SingleProduct extends StatelessWidget {
                 ),
               ),
               Text(
-                "\$ ${price.toString()}",
+                price.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
